@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/static/css/scenery_css/style.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/scenery_css/pagepeel.packed.css"/>
+    <title>景区</title>
+    <script type="text/javascript" src="/static/js/scenery_js/jQuery.3.6.0.js"></script>
+    <script type="text/javascript" src="/static/js/scenery_js/jquery.params.js"></script>
+    <script src="/static/js/scenery_js/jquery.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/static/js/scenery_js/pagepeel-jquery.js"></script>
+    <script src="/static/js/sakura.js"></script>
+    <script src="/static/js/love.js"></script>
+    <style type="text/css">
+        body {
+            padding: 1em;
+            margin: 0;
+            background: #ccc;
+            color: #333;
+        }
+
+        .xteam-pagepeel img.peel {
+            width: 75px;
+            height: 79px;
+        }
+
+
+        .xteam-pagepeel .back {
+            width: 75px;
+            height: 75px;
+        }
+
+        .xteam-pagepeel .corner {
+            background-repeat: no-repeat;
+            background-image: url(/static/image/scenery/note-revealed.png);
+            background-position: top right;
+        }
+
+        .xteam-pagepeel .peel-hint {
+            color: #333333;
+            border: none;
+            font-family: monospace;
+            font-size: 2em;
+        }
+
+        .xteam-pagepeel .peel-content .action {
+            color: #333333;
+        }
+
+        .xteam-pagepeel .peel-content .close {
+            display: none;
+        }
+
+        .xteam-pagepeel.full .peel-content .close {
+            display: inherit;
+        }
+    </style>
+    <style>
+        .btn-box {
+            width: 50px;
+            /* 弹性布局 */
+            display: flex;
+            /* 横向排列 */
+            flex-direction: row;
+            /* 允许换行 */
+            flex-wrap: wrap;
+            /* 平均分配宽度给每一个子元素 */
+            justify-content: space-around;
+        }
+
+        .btn-box button {
+            /* 相对定位 */
+            position: relative;
+            border: none;
+            background: linear-gradient(to right, #4806ff, #efff0b);;
+            width: 50px;
+            height: 30px;
+            margin: 20px 0;
+            font-size: 5px;
+            color: #fff;
+            /* 字间距 */
+            letter-spacing: 3px;
+            border-radius: 30px;
+            /* 阴影 */
+            box-shadow: 3px 5px 10px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            /* 这里加个溢出隐藏 */
+            overflow: hidden;
+        }
+
+        .btn-box button:hover {
+            box-shadow: 3px 5px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-box button span {
+            /* 绝对定位 */
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: rgb(255, 0, 0);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            /* 设置元素不对指针事件做出反应 */
+            pointer-events: none;
+            /* 执行动画 */
+            animation: animate 1s ease;
+        }
+
+        /* 定义动画 */
+        @keyframes animate {
+            from {
+                width: 0;
+                height: 0;
+                opacity: 0.5;
+            }
+            to {
+                width: 400px;
+                height: 400px;
+                opacity: 0;
+            }
+        }
+    </style>
+    <script type="text/javascript">
+        function user(user) {
+            var _user = 'false'
+            if (_user.includes(user)) {
+                return window.location.href = '/login'
+            } else {
+                return window.alert("您已经登入");
+            }
+        }
+    </script>
+    <script type="text/javascript">
+        function userhome(user) {
+            var _user = 'false'
+            if (_user.includes(user)) {
+                return window.alert("请先登入");
+            } else {
+                return window.location.href = '/people';
+            }
+        }
+    </script>
+    <script type="text/javascript">
+        function get_love(scenery) {
+            window.alert("景点已添加到收藏中")
+            return window.location.href='/scenery/?is_save=1&scenery='+scenery
+        }
+    </script>
+    <script src="/static/js/L2Dwidget.min.js"></script>
+    <script>
+        L2Dwidget.init({
+            "model": {
+                "jsonPath": "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+                "scale": 1,
+                "hHeadPos": 0.5,
+                "vHeadPos": 0.618
+            },
+            "display": {"position": "right", "width": 200, "height": 200, "hOffset": 0, "vOffset": 0},
+            "mobile": {"show": true, "scale": 0.5},
+            "react": {"opacityDefault": 0.7, "opacityOnHover": 0.2}
+        });
+    </script>
+
+</head>
+<body>
+<div id="pagepeel" class="xteam-pagepeel">
+		<span class="peel">
+			<map name="peelmap">
+				<area shape="poly" coords="0,0,614,0,614,614,0,0" title="Go!" href="#" class="peel-hotzone"/>
+			</map>
+			<img src="/static/image/scenery/page-peel.png" alt="" class="peel"/>
+			<span class="back corner"></span>
+			<span class="back link">
+				<img src="/static/image/scenery/trans.gif" alt="" class="map" usemap="#peelmap"/>
+				<span class="peel-content">
+					<span class="action">
+						Show me the <strong>money!</strong>
+					</span>
+					<form>
+						<button type="button" class="close">Close</button>
+					</form>
+				</span>
+			</span>
+		</span>
+</div>
+<link rel="stylesheet"
+      href="/static/css/scenery_css/bootstrap.min.css"/>
+<header data-block-type="headers" data-id="1">
+    <div class="container">
+        <nav class="navbar navbar-expand-lg"><a class="navbar-brand"><img
+                src="https://template-1253409072.cos.ap-guangzhou.myqcloud.com/2022/03/logo-small-svg.svg" height="22"
+                alt="HTMLPAGE" itemprop="logo" class="custom-logo"/></a>
+            <button type="button" data-toggle="collapse" data-target="#navbarNav5" aria-controls="navbarNav5"
+                    aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"><span
+                    class="navbar-toggler-icon"></span></button>
+            <div id="navbarNav5" class="collapse navbar-collapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active"><a href="/views" class="nav-link">首页 <span
+                            class="sr-only">(current)</span></a></li>
+                    <li class="nav-item"><a href="/hot-city" class="nav-link">热门城市</a></li>
+                    <li class="nav-item"><a href="/hot_way" class="nav-link">推荐路线</a></li>
+                </ul>
+                <ul class="navbar-nav justify-content-end ml-auto" style="left:-100px;">
+                    <li class="nav-item"><a onclick="userhome({{ user }})" class="nav-link"
+                                            style="left:-100px;">个人中心</a></li>
+                </ul>
+
+                <a onclick="user({{ user }})" class="btn ml-md-3" style="left:-100px;">登录</a>
+                <a href="/index" class="btn ml-md-3">注册</a></div>
+            <div id="datetime"></div>
+            <script>
+                setInterval("document.getElementById('datetime').innerHTML=new Date().toLocaleString();", 1000);
+            </script>
+        </nav>
+    </div>
+</header>
+<section data-block-type="features" data-id="8" draggable="true" class="fdb-block">
+    <div class="container">
+        <div class="row align-items-center pb-xl-5">
+            <div class="col-12 col-md-7 col-xl-5">
+                <div id="test" style="font-size: 20px"><strong id="SCENERY">{{ scenery_name }}</strong>
+                    <p>{{ scenery_mark }}</p></div>
+                <div class="btn-box">
+                    <button onclick="get_love('{{ scenery_name }}')">收藏</button>
+                </div>
+                <a href="/option_page?scenery={{ scenery_name }}">
+                    xxx人评价
+                </a>
+                <script type="text/javascript">
+                    // 获取所有按钮对象
+                    const btns = document.querySelectorAll("button");
+                    // 循环所有按钮,并为每一个按钮添加点击事件
+                    btns.forEach(btn => {
+                        btn.addEventListener("click", e => {
+                            // 创建span元素,并设置其位置为鼠标点击的位置
+                            let span = document.createElement("span");
+                            span.style.left = e.offsetX + "px";
+                            span.style.top = e.offsetY + "px";
+                            // 将span元素添加到按钮标签里
+                            btn.appendChild(span);
+                            // 1秒后删除span元素
+                            setTimeout(() => {
+                                span.remove();
+                            }, 1000);
+                        })
+                    })
+                </script>
+                <p class="text-h3">{{ scenery_detail }} </p>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 m-sm-auto mr-md-0 ml-md-auto pt-4 pt-md-0" style="left: -200px;">
+                <a href="/photo?scenery={{ scenery_name }}"><img alt=""
+                                                                 src="/static/image/page_image/scenery_image/{{ scenery_name }}.jpg"
+                                                                 class="img-fluid"/></a>
+            </div>
+        </div>
+        <div class="row pt-5">
+            <div class="col-12 col-sm-6 col-md-3"><h3><strong>地址&到达方式</strong></h3>
+                <p>地址：{{ scenery_address }}</p>
+                <p>到达方式：{{ scenery_way }}</p></div>
+            <div class="col-12 col-sm-6 col-md-3 pt-3 pt-sm-0"><h3><strong>开放时间</strong></h3>
+                <p>{{ scenery_open }}</p>
+                <p>门票：{{ scenery_menpiao }}</p>
+            </div>
+            <div class="col-12 col-sm-6 col-md-3 pt-3 pt-md-0" style="left: -100px"><h3><strong>其他</strong></h3>
+                <p>{{ scenery_other }}</p>
+            </div>
+            <div class="col-12 col-sm-6 col-md-3 pt-3 pt-md-0" style="left: -200px"><h3><strong id="i9xpk">排名</strong>
+            </h3>
+                <p>{{ scenery_rank }}</p></div>
+        </div>
+        <p style="top:90%"><small>&copy; Hydrogen Free HTML5 Template. All Rights Reserved. <br>Designed by: <a href="#"
+                                                                                                                target="_blank">FREEHTML5.co</a>
+            | Images by: <a href="#" target="_blank">Pexels</a> </small></p>
+    </div>
+</section>
+<script type="text/javascript">
+    var peel = new Xteam.Ui.PagePeel('#pagepeel');
+</script>
+</body>
+</html>

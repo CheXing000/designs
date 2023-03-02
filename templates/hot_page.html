@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+	<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>热门城市</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Free HTML5 Template by FREEHTML5.CO" />
+	<meta name="keywords" content="free html5, free template, free bootstrap, html5, css3, mobile first, responsive" />
+	<meta name="author" content="FREEHTML5.CO" />
+  <!-- Facebook and Twitter integration -->
+	<meta property="og:title" content=""/>
+	<meta property="og:image" content=""/>
+	<meta property="og:url" content=""/>
+	<meta property="og:site_name" content=""/>
+	<meta property="og:description" content=""/>
+	<meta name="twitter:title" content="" />
+	<meta name="twitter:image" content="" />
+	<meta name="twitter:url" content="" />
+	<meta name="twitter:card" content="" />
+	<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+	<link rel="shortcut icon" href="favicon.ico">
+
+	<!-- Google Webfonts -->
+	<link href='http://fonts.googleapis.com/css?family=Roboto:400,300,100,500' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+	<!-- Animate.css -->
+	<link rel="stylesheet" href="/static/css/hot_css/animate.css">
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet" href="/static/css/hot_css/icomoon.css">
+	<!-- Magnific Popup -->
+	<link rel="stylesheet" href="/static/css/hot_css/magnific-popup.css">
+	<!-- Salvattore -->
+	<link rel="stylesheet" href="/static/css/hot_css/salvattore.css">
+	<!-- Theme Style -->
+	<link rel="stylesheet" href="/static/css/hot_css/style.css">
+	<!-- Modernizr JS -->
+	<script src="/static/js/hot_js/modernizr-2.6.2.min.js"></script>
+    <script src="/static/js/snow.js"></script>
+	<!-- FOR IE9 below -->
+	<!--[if lt IE 9]>
+	<script src="/static/js/hot_js/respond.min.js"></script>
+	<![endif]-->
+     <script type="text/javascript">
+        function userhome(user){
+            var _user = 'false'
+            if (_user.includes(user)){
+                return window.alert("请先登入");
+            }else {
+                return window.location.href='/people';
+            }
+        }
+    </script>
+	</head>
+	<body>
+	<div id="fh5co-offcanvass">
+		<a href="#" class="fh5co-offcanvass-close js-fh5co-offcanvass-close">Menu <i class="icon-cross"></i> </a>
+		<h1 class="fh5co-logo"><a class="navbar-brand" >Hydrogen</a></h1>
+		<ul>
+			<li><a href="/views">首页</a></li>
+			<li><a href="/new_page">全部景点</a></li>
+			<li><a href="/hot_way">推荐路线</a></li>
+            <li><a onclick="userhome({{ user }})">个人中心</a></li>
+		</ul>
+		<h3 class="fh5co-lead">loGIN</h3>
+		<p class="fh5co-social-icons">
+			<a href="/login"><i class="icon-twitter"></i></a>
+		</p>
+	</div>
+	<header id="fh5co-header" role="banner">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<a href="#" class="fh5co-menu-btn js-fh5co-menu-btn">Menu <i class="icon-menu"></i></a>
+					<a class="navbar-brand" href="index.html">Hydrogen</a>
+				</div>
+			</div>
+		</div>
+	</header>
+	<!-- END .header -->
+	<div id="fh5co-main">
+		<div class="container">
+
+			<div class="row">
+
+        <div id="fh5co-board" data-columns>
+        	<div class="item">
+        		<div class="animate-box">
+	        		<a href="/static/image/hot_image/hot_city_img/{{ 香港_img }}" class="image-popup fh5co-board-img" title="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, eos?"><img src="/static/image/hot_image/hot_city_img/{{ 香港_img }}" alt="Free HTML5 Bootstrap template" style="width: 300px"></a>
+        		</div>
+                <div class="fh5co-desc"><a href="#">{{ 香港 }}<br/>{{ 香港_m }}人去过.</a></div>
+        	</div>
+        	<div class="item">
+        		<div class="animate-box">
+	        		<a href="/static/image/hot_image/hot_city_img/{{ 澳门_img }}" class="image-popup fh5co-board-img"><img src="/static/image/hot_image/hot_city_img/{{ 澳门_img }}" alt="Free HTML5 Bootstrap template" style="width: 300px;height: 250px"></a>
+	        		<div class="fh5co-desc"><a href="#">{{ 澳门 }}<br/>{{ 澳门_m }}人去过.</a></div>
+        		</div>
+        	</div>
+        	<div class="item">
+        		<div class="animate-box">
+	        		<a href="/static/image/hot_image/hot_city_img/{{ 台北_img }}" class="image-popup fh5co-board-img"><img src="/static/image/hot_image/hot_city_img/{{ 台北_img }}" alt="Free HTML5 Bootstrap template" style="width: 300px;height: 230px"></a>
+	        		<div class="fh5co-desc"><a href="#">{{ 台北 }}<br/>{{ 台北_m }}人去过.</a></div>
+        		</div>
+        	</div>
+        	<div class="item">
+        		<div class="animate-box">
+	        		<a href="/static/image/hot_image/hot_city_img/{{ 台湾_img }}" class="image-popup fh5co-board-img"><img src="/static/image/hot_image/hot_city_img/{{ 台湾_img }}" alt="Free HTML5 Bootstrap template" style="width: 300px;height: 190px"></a>
+	        		<div class="fh5co-desc"><a href="#">{{ 台湾 }}<br/>{{ 台湾_m }}人去过.</a></div>
+        		</div>
+        	</div>
+        	<div class="item">
+        		<div class="animate-box">
+	        		<a href="/static/image/hot_image/hot_city_img/{{ 北京_img }}" class="image-popup fh5co-board-img"><img src="/static/image/hot_image/hot_city_img/{{ 北京_img }}" alt="Free HTML5 Bootstrap template" style="width: 300px;height: 230px"></a>
+	        		<div class="fh5co-desc"><a href="#">{{ 北京 }}<br/>{{ 北京_m }}人去过.</a></div>
+        		</div>
+        	</div>
+        	<div class="item">
+        		<div class="animate-box">
+	        		<a href="/static/image/hot_image/hot_city_img/{{ 上海_img }}" class="image-popup fh5co-board-img"><img src="/static/image/hot_image/hot_city_img/{{ 上海_img }}" alt="Free HTML5 Bootstrap template" style="width: 300px"></a>
+	        		<div class="fh5co-desc"><a href="#">{{ 上海 }}<br/>{{ 上海_m }}人去过.</a></div>
+        		</div>
+        	</div>
+        	<div class="item">
+        		<div class="animate-box">
+	        		<a href="/static/image/hot_image/hot_city_img/{{ 成都_img }}" class="image-popup fh5co-board-img"><img src="/static/image/hot_image/hot_city_img/{{ 成都_img }}" alt="Free HTML5 Bootstrap template" style="width: 300px"></a>
+	        		<div class="fh5co-desc"><a href="#">{{ 成都 }}<br/>{{ 成都_m }}人去过.</a></div>
+        		</div>
+        	</div>
+        	<div class="item">
+        		<div class="animate-box">
+	        		<a href="/static/image/hot_image/hot_city_img/{{ 广州_img }}" class="image-popup fh5co-board-img"><img src="/static/image/hot_image/hot_city_img/{{ 广州_img }}" alt="Free HTML5 Bootstrap template" style="width: 300px"></a>
+	        		<div class="fh5co-desc"><a href="#">{{ 广州 }}<br/>{{ 广州_m }}人去过.</a></div>
+        		</div>
+        	</div>
+        	<div class="item">
+        		<div class="animate-box">
+	        		<a href="/static/image/hot_image/hot_city_img/{{ 杭州_img }}" class="image-popup fh5co-board-img"><img src="/static/image/hot_image/hot_city_img/{{ 杭州_img }}" alt="Free HTML5 Bootstrap template" style="width: 300px"></a>
+	        		<div class="fh5co-desc"><a href="#">{{ 杭州 }}<br/>{{ 杭州_m }}人去过.</a></div>
+        		</div>
+        	</div>
+        	<div class="item">
+        		<div class="animate-box">
+	        		<a href="/static/image/hot_image/hot_city_img/{{ 南京_img }}" class="image-popup fh5co-board-img"><img src="/static/image/hot_image/hot_city_img/{{ 南京_img }}" alt="Free HTML5 Bootstrap template" style="width: 300px"></a>
+	        		<div class="fh5co-desc"><a href="#">{{ 南京 }}<br/>{{ 南京_m }}人去过.</a></div>
+        		</div>
+        	</div>
+        	<div class="item">
+        		<div class="animate-box">
+	        		<a href="/static/image/hot_image/hot_city_img/{{ 常州_img }}" class="image-popup fh5co-board-img"><img src="/static/image/hot_image/hot_city_img/{{ 常州_img }}" alt="Free HTML5 Bootstrap template" style="width: 300px;height: 250px;"></a>
+	        		<div class="fh5co-desc"><a href="#">{{ 常州 }}<br/>{{ 常州_m }}人去过.</a></div>
+        		</div>
+        	</div>
+        	<div class="item">
+        		<div class="animate-box">
+	        		<a href="/static/image/hot_image/hot_city_img/{{ 昆明_img }}" class="image-popup fh5co-board-img"><img src="/static/image/hot_image/hot_city_img/{{ 昆明_img }}" alt="Free HTML5 Bootstrap template" style="width: 300px;height: 240px"></a>
+	        		<div class="fh5co-desc"><a href="#">{{ 昆明 }}<br/>{{ 昆明_m }}人去过.</a></div>
+        		</div>
+        	</div>
+        	<div class="item">
+        		<div class="animate-box">
+	        		<a href="/static/image/hot_image/hot_city_img/{{ 无锡_img }}" class="image-popup fh5co-board-img"><img src="/static/image/hot_image/hot_city_img/{{ 无锡_img }}" alt="Free HTML5 Bootstrap template" style="width: 300px"></a>
+	        		<div class="fh5co-desc"><a href="#">{{ 无锡 }}<br/>{{ 无锡_m }}人去过.</a></div>
+        		</div>
+        	</div>
+        	<div class="item">
+        		<div class="animate-box">
+	        		<a href="/static/image/hot_image/hot_city_img/{{ 长沙_img }}" class="image-popup fh5co-board-img"><img src="/static/image/hot_image/hot_city_img/{{ 长沙_img }}" alt="Free HTML5 Bootstrap template" style="width: 300px"></a>
+	        		<div class="fh5co-desc"><a href="#">{{ 长沙 }}<br/>{{ 长沙_m }}人去过.</a></div>
+        		</div>
+        	</div>
+        	<div class="item">
+        		<div class="animate-box">
+	        		<a href="/static/image/hot_image/hot_city_img/{{ 高雄市_img }}" class="image-popup fh5co-board-img"><img src="/static/image/hot_image/hot_city_img/{{ 高雄市_img }}" alt="Free HTML5 Bootstrap template" style="width: 300px"></a>
+	        		<div class="fh5co-desc"><a href="#">{{ 高雄市 }}<br/>{{ 高雄市_m }}人去过.</a></div>
+        		</div>
+        	</div>
+        	<div class="item">
+        		<div class="animate-box">
+	        		<a href="/static/image/hot_image/hot_city_img/{{ 桂林_img }}" class="image-popup fh5co-board-img"><img src="/static/image/hot_image/hot_city_img/{{ 桂林_img }}" alt="Free HTML5 Bootstrap template" style="width: 300px"></a>
+	        		<div class="fh5co-desc"><a href="#">{{ 桂林 }}<br/>{{ 桂林_m }}人去过.</a></div>
+        		</div>
+        	</div>
+        	<div class="item">
+        		<div class="animate-box">
+	        		<a href="/static/image/hot_image/hot_city_img/{{ 丽江_img }}" class="image-popup fh5co-board-img"><img src="/static/image/hot_image/hot_city_img/{{ 丽江_img }}" alt="Free HTML5 Bootstrap template" style="width: 300px"></a>
+	        		<div class="fh5co-desc"><a href="#">{{ 丽江 }}<br/>{{ 丽江_m }}人去过.</a></div>
+        		</div>
+        	</div>
+        	<div class="item">
+        		<div class="animate-box">
+	        		<a href="/static/image/hot_image/hot_city_img/{{ 青岛_img }}" class="image-popup fh5co-board-img"><img src="/static/image/hot_image/hot_city_img/{{ 青岛_img }}" alt="Free HTML5 Bootstrap template" style="width: 300px"></a>
+	        		<div class="fh5co-desc"><a href="#">{{ 青岛 }}<br/>{{ 青岛_m }}人去过.</a></div>
+        		</div>
+        	</div>
+        	<div class="item">
+        		<div class="animate-box">
+	        		<a href="/static/image/hot_image/hot_city_img/{{ 济南_img }}" class="image-popup fh5co-board-img"><img src="/static/image/hot_image/hot_city_img/{{ 济南_img }}" alt="Free HTML5 Bootstrap template" style="width: 300px"></a>
+	        		<div class="fh5co-desc"><a href="#">{{ 济南 }}<br/>{{ 济南_m }}人去过.</a></div>
+        		</div>
+        	</div>
+        	<div class="item">
+        		<div class="animate-box">
+	        		<a href="/static/image/hot_image/hot_city_img/{{ 天津_img }}" class="image-popup fh5co-board-img"><img src="/static/image/hot_image/hot_city_img/{{ 天津_img }}" alt="Free HTML5 Bootstrap template" style="width: 300px"></a>
+	        		<div class="fh5co-desc"><a href="#">{{ 天津 }}<br/>{{ 天津_m }}人去过.</a></div>
+        		</div>
+        	</div>
+        	<div class="item">
+        		<div class="animate-box">
+	        		<a href="/static/image/hot_image/hot_city_img/{{ 厦门_img }}" class="image-popup fh5co-board-img"><img src="/static/image/hot_image/hot_city_img/{{ 厦门_img }}" alt="Free HTML5 Bootstrap template" style="width: 300px;height: 220px"></a>
+	        		<div class="fh5co-desc"><a href="#">{{ 厦门 }}<br/>{{ 厦门_m }}人去过.</a></div>
+        		</div>
+        	</div>
+
+        	<div class="item">
+        		<div class="animate-box">
+	        		<a href="/static/image/hot_image/hot_city_img/{{ 深圳_img }}" class="image-popup fh5co-board-img"><img src="/static/image/hot_image/hot_city_img/{{ 深圳_img }}" alt="Free HTML5 Bootstrap template" style="width: 300px"></a>
+	        		<div class="fh5co-desc"><a href="#">{{ 深圳 }}<br/>{{ 深圳_m }}人去过.</a></div>
+        		</div>
+        	</div>
+        	<div class="item">
+        		<div class="animate-box">
+	        		<a href="/static/image/hot_image/hot_city_img/{{ 重庆_img }}" class="image-popup fh5co-board-img"><img src="/static/image/hot_image/hot_city_img/{{ 重庆_img }}" alt="Free HTML5 Bootstrap template" style="width: 300px"></a>
+	        		<div class="fh5co-desc"><a href="#">{{ 重庆 }}<br/>{{ 重庆_m }}人去过.</a></div>
+        		</div>
+        	</div>
+        	<div class="item">
+        		<div class="animate-box">
+	        		<a href="/static/image/hot_image/hot_city_img/{{ 三亚_img }}" class="image-popup fh5co-board-img"><img src="/static/image/hot_image/hot_city_img/{{ 三亚_img }}" alt="Free HTML5 Bootstrap template" style="width: 300px"></a>
+	        		<div class="fh5co-desc"><a href="#">{{ 三亚 }}<br/>{{ 三亚_m }}人去过.</a></div>
+        		</div>
+        	</div>
+        	<div class="item">
+        		<div class="animate-box">
+	        		<a href="/static/image/hot_image/hot_city_img/{{ 苏州_img }}" class="image-popup fh5co-board-img"><img src="/static/image/hot_image/hot_city_img/{{ 苏州_img }}" alt="Free HTML5 Bootstrap template" style="width: 300px"></a>
+	        		<div class="fh5co-desc"><a href="#">{{ 苏州 }}<br/>{{ 苏州_m }}人去过.</a></div>
+        		</div>
+        	</div>
+        	<div class="item">
+        		<div class="animate-box">
+	        		<a href="/static/image/hot_image/hot_city_img/{{ 大连_img }}" class="image-popup fh5co-board-img"><img src="/static/image/hot_image/hot_city_img/{{ 大连_img }}" alt="Free HTML5 Bootstrap template" style="width: 300px"></a>
+	        		<div class="fh5co-desc"><a href="#">{{ 大连 }}<br/>{{ 大连_m }}人去过.</a></div>
+        		</div>
+        	</div>
+        	<div class="item">
+        		<div class="animate-box">
+	        		<a href="/static/image/hot_image/hot_city_img/{{ 武汉_img }}" class="image-popup fh5co-board-img"><img src="/static/image/hot_image/hot_city_img/{{ 武汉_img }}" alt="Free HTML5 Bootstrap template" style="width: 300px"></a>
+	        		<div class="fh5co-desc"><a href="#">{{ 武汉 }}<br/>{{ 武汉_m }}人去过.</a></div>
+        		</div>
+        	</div>
+        	<div class="item">
+        		<div class="animate-box">
+	        		<a href="/static/image/hot_image/hot_city_img/{{ 西安_img }}" class="image-popup fh5co-board-img"><img src="/static/image/hot_image/hot_city_img/{{ 西安_img }}" alt="Free HTML5 Bootstrap template" style="width: 300px;height: 220px;"></a>
+	        		<div class="fh5co-desc"><a href="#">{{ 西安 }}<br/>{{ 西安_m }}人去过.</a></div>
+        		</div>
+        	</div>
+        	<div class="item">
+        		<div class="animate-box">
+	        		<a href="/static/image/hot_image/hot_city_img/{{ 珠海_img }}" class="image-popup fh5co-board-img"><img src="/static/image/hot_image/hot_city_img/{{ 珠海_img }}" alt="Free HTML5 Bootstrap template" style="width: 300px"></a>
+	        		<div class="fh5co-desc"><a href="#">{{ 珠海 }}<br/>{{ 珠海_m }}人去过.</a></div>
+        		</div>
+        	</div>
+        	<div class="item">
+        		<div class="animate-box">
+	        		<a href="/static/image/hot_image/hot_city_img/{{ 垦丁_img }}" class="image-popup fh5co-board-img"><img src="/static/image/hot_image/hot_city_img/{{ 垦丁_img }}" alt="Free HTML5 Bootstrap template" style="width: 300px"></a>
+                    <div class="fh5co-desc"><a href="#">{{ 垦丁 }}<br/>{{ 垦丁_m }}人去过.</a></div>
+        		</div>
+        	</div>
+        </div>
+        </div>
+       </div>
+	</div>
+	<footer id="fh5co-footer">
+		<div class="container">
+			<div class="row row-padded">
+				<div class="col-md-12 text-center">
+					<p class="fh5co-social-icons">
+						<a href="#"><i class="icon-twitter"></i></a>
+					</p>
+					<p><small>&copy; Hydrogen Free HTML5 Template. All Rights Reserved. <br>Designed by: <a href="#" target="_blank">FREEHTML5.co</a> | Images by: <a href="#" target="_blank">Pexels</a> </small></p>
+				</div>
+			</div>
+		</div>
+	</footer>
+	<!-- jQuery -->
+	<script src="/static/js/hot_js/jquery.min.js"></script>
+	<!-- jQuery Easing -->
+	<script src="/static/js/hot_js/jquery.easing.1.3.js"></script>
+	<!-- Bootstrap -->
+	<script src="/static/js/hot_js/bootstrap.min.js"></script>
+	<!-- Waypoints -->
+	<script src="/static/js/hot_js/jquery.waypoints.min.js"></script>
+	<!-- Magnific Popup -->
+	<script src="/static/js/hot_js/jquery.magnific-popup.min.js"></script>
+	<!-- Salvattore -->
+	<script src="/static/js/hot_js/salvattore.min.js"></script>
+	<!-- Main JS -->
+	<script src="/static/js/hot_js/main.js"></script>
+
+	</body>
+</html>

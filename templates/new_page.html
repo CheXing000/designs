@@ -1,0 +1,166 @@
+{% load pagination_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ the_value }} 景区</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/static/css/page_css/bootstrp.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/page_css/index.css"/>
+    <script src="/static/js/page_js/jquery.min.js"></script>
+    <script src="/static/js/page_js/bootstrap.min.js"></script>
+    <script src="/static/js/scenery_js/jQuery.3.6.0.js"></script>
+    <script type="text/javascript">
+        function get() {
+            return jQuery("#city").val()
+        }
+    </script>
+    <script type="text/javascript" src="/static/js/page_js/moveobj.js"></script>
+    <script type="text/javascript">
+        var flyimage1, flyimage2, flyimage3
+
+        function pagestart() {
+            flyimage1 = new Chip("flyimage1", 47, 68);
+            flyimage2 = new Chip("flyimage2", 47, 68);
+            flyimage3 = new Chip("flyimage3", 47, 68);
+            movechip("flyimage1");
+            movechip("flyimage2");
+            movechip("flyimage3");
+        }
+
+        if (window.addEventListener)
+            window.addEventListener("load", pagestart, false)
+        else if (window.attachEvent)
+            window.attachEvent("onload", pagestart)
+        else if (document.getElementById)
+            window.onload = pagestart
+    </script>
+    <script type="text/javascript">
+        function user(user) {
+            var _user = 'false'
+            if (_user.includes(user)) {
+                return window.location.href = '/login'
+            } else {
+                return window.alert("您已经登入");
+            }
+        }
+    </script>
+        <script type="text/javascript">
+        function userhome(user){
+            var _user = 'false'
+            if (_user.includes(user)){
+                return window.alert("请先登入");
+            }else {
+                return window.location.href='/people';
+            }
+        }
+    </script>
+    <script src="/static/js/L2Dwidget.min.js"></script>
+    <script src="/static/js/sakura.js"></script>
+    <script src="/static/js/love.js"></script>
+</head>
+<body>
+<div class="page-1">
+
+    <div class="c-nav">
+        <div class="container navFlex">
+            <div class="flexItem">
+                <img class="logo" src="/static/image/page_image/wunsun-logo.png"/>
+            </div>
+
+            <div class="flexItem hiden">
+                <img class="btnImg" src="/static/image/page_image/navBtn.png"/>
+            </div>
+            <div class="flexItem show">
+                <ul>
+                    <li><a href="/views">首页</a></li>
+                    <li><a href="/hot-city">热门城市</a></li>
+                    <li><a href="/hot_way">推荐路线</a></li>
+                    <li><a onclick="userhome({{ user }})">个人中心</a></li>
+                    <li><a onclick="user({{ user }})">登入</a></li>
+                    <li><a href="/index">注册</a></li>
+
+                </ul>
+            </div>
+        </div>
+           <script>
+        L2Dwidget.init({
+            "model": {
+                "jsonPath": "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+                "scale": 1,
+                "hHeadPos": 0.5,
+                "vHeadPos": 0.618
+            },
+            "display": {"position": "left", "width": 180, "height": 180, "hOffset": 0, "vOffset": 0},
+            "mobile": {"show": true, "scale": 0.5},
+            "react": {"opacityDefault": 0.7, "opacityOnHover": 0.2}
+        });
+    </script>
+    </div>
+
+    {#    <script type="text/javascript" src="js/jquery.min.js"></script>#}
+    <script type="text/javascript">
+        //用于判断导航栏的状态
+        var toggle = true;
+
+        //导航栏按钮
+        $('.btnImg').click(function () {
+            if (toggle) {
+                $('.btnImg').css("border", "1px solid #b0ccf3");
+                toggle = false
+            } else {
+                $('.btnImg').css("border", "1px solid transparent");
+                toggle = true;
+            }
+            $(".show").slideToggle(300);
+        })
+
+        //窗口大小发生改变
+        $(window).resize(function () {
+            //获取窗口宽度
+            var windSize = $(window).width();
+
+            if (windSize > 576) {
+                $(".show").slideDown(0);
+            } else {
+                $(".show").slideUp(0);
+            }
+        });
+    </script>
+
+    <DIV ID="flyimage1" STYLE="position:absolute; left: -500px; width:47px; height:68px;">
+        <A><IMG SRC="/static/image/page_image/1.gif" BORDER=0></a>
+    </DIV>
+    <DIV ID="flyimage2" STYLE="position:absolute; left: -500px; width:47px; height:68px;">
+        <A><IMG SRC="/static/image/page_image/2.gif" BORDER=0></a>
+    </DIV>
+    <DIV ID="flyimage3" STYLE="position:absolute; left: -500px; width:47px; height:68px;">
+        <A><IMG SRC="/static/image/page_image/3.gif" BORDER=0></a>
+    </DIV>
+    <div class="page-block">
+        <h1>{{ the_value }}景点</h1>
+        {% autopaginate page 15 %}
+        {% for p in page %}
+            <div class="article-hover">
+                <div class="thumbnail">
+                    <img src="/static/image/page_image/scenery_image/{{ p.image_name }}"
+                         style="width: 260px;height: 140px;" alt={{ p.scenery }}>
+                </div>
+                <div class="info-content" onmouseover="light(this)" onmouseout="normal(this)">
+                    <div class="li-title" id="scenery">
+                        {{ p.scenery }}
+                    </div>
+                    <a href="/scenery?scenery={{ p.scenery }}">查看详情</a>
+                    <div class="li-content">
+                        {#                        {{ p.scenery_detail }}#}
+                    </div>
+                </div>
+            </div>
+            <br/>
+        {% endfor %}
+    </div>
+    {% paginate %}
+</div>
+</body>
+</html>

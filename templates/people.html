@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>个人信息</title>
+    <link rel="stylesheet" href="/static/css/way_info_css/style_1.css">
+        <script>
+        function check_o(user) {
+            var a = 'false'
+            if (a.includes(user)) {
+                window.location.href = "/login"
+            } else {
+                alert("你已经登入，不需要在次登入")
+            }
+        }
+    </script>
+    <script>
+        function check(user) {
+            var a = 'false'
+            if (a.includes(user)) {
+                alert("请先登入")
+            } else {
+                window.location.href = "/people"
+            }
+        }
+    </script>
+</head>
+<body>
+<div class="c-nav">
+    <div class="container navFlex">
+        <div class="flexItem">
+            <img class="logo" src="/static/image/re_image/wunsun-logo.png"/>
+        </div>
+
+        <div class="flexItem hiden">
+            <img class="btnImg" src="/static/image/re_image/navBtn.png"/>
+        </div>
+        <div class="flexItem show">
+            <ul>
+                <li><a href="/views">首页</a></li>
+                <li><a href="/hot-city">热门城市</a></li>
+                <li><a href="/hot_way">推荐路线</a></li>
+                <li><a href="/new_page">中国景区</a></li>
+                <li><a onclick="check({{ user }})">个人中心</a></li>
+                <li><a onclick="check_o({{ user }})">登入</a></li>
+                <li><a href="/index">注册</a></li>
+            </ul>
+        </div>
+    </div>
+    <script src="/static/js/L2Dwidget.min.js"></script>
+    <script>
+        L2Dwidget.init({
+            "model": {
+                "jsonPath": "https://cdn.jsdelivr.net/npm/live2d-widget-model-wanko@1.0.5/assets/wanko.model.json",
+                "scale": 1,
+                "hHeadPos": 0.5,
+                "vHeadPos": 0.618
+            },
+            "display": {"position": "right", "width": 200, "height": 200, "hOffset": 0, "vOffset": 0},
+            "mobile": {"show": true, "scale": 0.5},
+            "react": {"opacityDefault": 0.7, "opacityOnHover": 0.2}
+        });
+    </script>
+</div>
+<div>
+    <table style="border: 1px; position:fixed ;top:130px;left:250px">
+        <tr>
+            <th style="width:100px"><a href="/people">个人信息</a></th>
+        </tr>
+        <tr>
+            <td style="height:30px">
+            </td>
+        </tr>
+        <tr>
+            <th style="width:100px"><a href="/user_safe">账号安全</a></th>
+        </tr>
+        <tr>
+            <td style="height:30px">
+            </td>
+        </tr>
+        <tr>
+            <th style="width:100px"><a href="/save_way">保存路线</a></th>
+        </tr>
+        <tr>
+            <td style="height:30px">
+            </td>
+        </tr>
+        <tr>
+            <th style="width:100px"><a href="/save_scenery">收藏景区</a></th>
+        </tr>
+    </table>
+    <table style="border: 1px;position:fixed; left:400px; top:180px; background: rgba(244,242,242,0.51);width:40%" cellpadding="5"
+           cellspacing="0">
+        <tr>
+            <td style="width:10%;position:fixed;top:180px;left:700px">个人信息</td>
+        </tr>
+        <tr>
+            <td style="height: 50px">
+            </td>
+        </tr>
+
+        <tr>
+            <td style="background: salmon;width:10%">姓名: </td>
+            <td>
+                <a style="width:95%">{{ name }}</a>
+            </td>
+            <td style="width:30%">
+                <img src="xxxxxxxxxxxx">
+            </td>
+        </tr>
+        <tr>
+            <td style="height:40px">
+            </td>
+        </tr>
+        <tr>
+            <td>性别: </td>
+            <td>
+                <a style="width: 96%">{{ sex }}</a>
+            </td>
+        </tr>
+        <tr>
+            <td style="height:40px">
+            </td>
+        </tr>
+        <tr>
+            <td>手机号码: </td>
+            <td>
+                <a style="width:95%">{{ phone }}</a>
+            </td>
+        </tr>
+        <tr>
+            <td style="height:40px">
+            </td>
+        </tr>
+        <tr>
+            <td>电子邮箱: </td>
+            <td>
+                <a style="width:95%">{{ email }} </a>
+            </td>
+        </tr>
+        <tr>
+            <td style="height:40px">
+            </td>
+        </tr>
+        <tr>
+            <td>自我介绍: </td>
+            <td colspan="3">
+                <a style="width: 98%;height:80px;">{{ myself }}</a>
+            </td>
+        </tr>
+        <tr>
+            <td style="height:40px">
+            </td>
+        </tr>
+        <tr>
+            <td>特长: </td>
+            <td colspan="3">
+                <a style="width: 98%; height:80px ">{{ good_at }}</a>
+            </td>
+        </tr>
+        <tr>
+            <td style="height:40px">
+            </td>
+        </tr>
+        <tr>
+            <td>去过的地方: </td>
+            <td colspan="3">
+                <a style="width: 98%;height:80px ">{{ go_way }}</a>
+            </td>
+        </tr>
+        <tr>
+            <td style="height:40px">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" align="right">欢迎你加入我们</td>
+        </tr>
+        <tr>
+            <td style="height:40px">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" align="center">
+                <button onclick="window.location.href='/people_page'" style="height: 30px;width: 60px"> 修改资料
+                </button>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

@@ -1,0 +1,169 @@
+{% load pagination_tags %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>旅游路线设计</title>
+    <link rel="stylesheet" href="/static/css/reway_css/style.css">
+    <script src="/static/js/page_js/jquery.min.js"></script>
+    <script src="/static/js/page_js/bootstrap.min.js"></script>
+    <script src="/static/css/page_css/bootstrp.min.css"></script>
+    <script>
+        function check(user) {
+            var a = 'false'
+            if (a.includes(user)) {
+                alert("请先登入")
+            } else {
+                window.location.href = "/people"
+            }
+        }
+    </script>
+    <script>
+        function check_o(user) {
+            var a = 'false'
+            if (a.includes(user)) {
+                window.location.href = "/login"
+            } else {
+                alert("你已经登入，不需要在次登入")
+            }
+        }
+    </script>
+    <script>
+        function get_status(status) {
+            var _status = 'false'
+            if (_status.includes(status)) {
+                window.alert('保存路线失败，请联系管理员之后再试！')
+            }
+        }
+    </script>
+    <script>
+        function get_allow(arg) {
+            var _user = 'false'
+            if (_user.includes(arg)) {
+                window.alert("请先登入在设计路线！")
+            }
+        }
+    </script>
+</head>
+<body>
+<div class="c-nav">
+    <div class="container navFlex">
+        <div class="flexItem">
+            <img class="logo" src="/static/image/re_image/wunsun-logo.png"/>
+        </div>
+
+        <div class="flexItem hiden">
+            <img class="btnImg" src="/static/image/re_image/navBtn.png"/>
+        </div>
+        <div class="flexItem show">
+            <ul>
+                <li><a href="/views">首页</a></li>
+                <li><a href="/hot-city">热门城市</a></li>
+                <li><a href="/hot_way">推荐路线</a></li>
+                <li><a href="/new_page">中国景区</a></li>
+                <li><a onclick="check({{ user }})">个人中心</a></li>
+                <li><a onclick="check_o({{ user }})">登入</a></li>
+                <li><a href="/index">注册</a></li>
+            </ul>
+        </div>
+    </div>
+    <script src="/static/js/L2Dwidget.min.js"></script>
+    <script>
+        L2Dwidget.init({
+            "model": {
+                "jsonPath": "https://cdn.jsdelivr.net/npm/live2d-widget-model-wanko@1.0.5/assets/wanko.model.json",
+                "scale": 1,
+                "hHeadPos": 0.5,
+                "vHeadPos": 0.618
+            },
+            "display": {"position": "right", "width": 200, "height": 200, "hOffset": 0, "vOffset": 0},
+            "mobile": {"show": true, "scale": 0.5},
+            "react": {"opacityDefault": 0.7, "opacityOnHover": 0.2}
+        });
+    </script>
+</div>
+<div class="box">
+    <div class="box1">
+        <form method="post">
+            {% csrf_token %}
+            <a style="font-size: 20px;position: absolute;left: 100px">请先选择日期:</a>
+            <input class="intwo" type="date" name="date">
+
+            <a style="font-size: 20px;position: absolute;left: 500px">请输入景区:</a>
+            <input class="inone" type="text" list="typelist" name="scenery" placeholder="输入内容">
+            <datalist id="typelist">
+                <option>aaaa</option>
+                <option>bbbb</option>
+                <option>ababab</option>
+                <option>ccccc</option>
+            </datalist>
+            <button type="submit" onclick="get_allow({{ user }})">提交</button>
+        </form>
+    </div>
+    <div class="page-block">
+        {% autopaginate pages 50 %}
+        {% for ps in pages %}
+            <div style="font-size: 25px"><strong>{{ ps.city }}</strong></div>
+            <div style="font-size: 17px"><strong>日期：{{ ps.date }}</strong></div>
+            <div class="page-1">
+                {% autopaginate page 50 %}
+                {% for p in page %}
+                    {% if p.date == ps.date %}
+                        <div class="article-hover">
+                            <div class="thumbnail">
+                                <img src="/static/image/scenery_way_images/{{ p.is_on }}.jpg" alt="">
+                            </div>
+                            <div class="info-content" onmouseover="light(this)" onmouseout="normal(this)">
+                                <div class="li-title">
+                                    {{ p.scenery }}
+                                </div>
+                                <div class="li-content">
+                                    推荐分数：{{ p.mark }}
+                                </div>
+                                <a href="#">查看详情</a>
+                                <a href="/make_way?del={{ p.scenery }}={{ p.date }}">移除</a>
+                            </div>
+                        </div>
+                        <br/>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endfor %}
+        {% paginate %}
+        <form method="get">
+            <button onclick="get_status({{ status }})">保存路线</button>
+        </form>
+    </div>
+    {% paginate %}
+</div>
+<script type="text/javascript">
+    //用于判断导航栏的状态
+    var toggle = true;
+
+    //导航栏按钮
+    $('.btnImg').click(function () {
+        if (toggle) {
+            $('.btnImg').css("border", "1px solid #b0ccf3");
+            toggle = false
+        } else {
+            $('.btnImg').css("border", "1px solid transparent");
+            toggle = true;
+        }
+        $(".show").slideToggle(300);
+    })
+
+    //窗口大小发生改变
+    $(window).resize(function () {
+        //获取窗口宽度
+        var windSize = $(window).width();
+
+        if (windSize > 576) {
+            $(".show").slideDown(0);
+        } else {
+            $(".show").slideUp(0);
+        }
+    });
+</script>
+</body>
+</html>

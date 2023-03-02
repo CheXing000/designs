@@ -1,0 +1,138 @@
+{% load pagination_tags %}
+<!DOCTYPE html>
+<html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>热门路线</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Free HTML5 Template by FREEHTML5.CO"/>
+    <meta name="keywords" content="free html5, free template, free bootstrap, html5, css3, mobile first, responsive"/>
+    <meta name="author" content="FREEHTML5.CO"/>
+    <!-- Facebook and Twitter integration -->
+    <meta property="og:title" content=""/>
+    <meta property="og:image" content=""/>
+    <meta property="og:url" content=""/>
+    <meta property="og:site_name" content=""/>
+    <meta property="og:description" content=""/>
+    <meta name="twitter:title" content=""/>
+    <meta name="twitter:image" content=""/>
+    <meta name="twitter:url" content=""/>
+    <meta name="twitter:card" content=""/>
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <!-- Google Webfonts -->
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,100,500' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="/static/css/hot_css/animate.css">
+    <!-- Icomoon Icon Fonts-->
+    <link rel="stylesheet" href="/static/css/hot_css/icomoon.css">
+    <!-- Magnific Popup -->
+    <link rel="stylesheet" href="/static/css/hot_css/magnific-popup.css">
+    <!-- Salvattore -->
+    <link rel="stylesheet" href="/static/css/hot_css/salvattore.css">
+    <!-- Theme Style -->
+    <link rel="stylesheet" href="/static/css/hot_css/style.css">
+    <!-- Modernizr JS -->
+    <script src="/static/js/hot_js/modernizr-2.6.2.min.js"></script>
+    <script src="/static/js/snow.js"></script>
+    <script src="/static/js/page_js/jquery.min.js"></script>
+    <script src="/static/js/page_js/bootstrap.min.js"></script>
+    <script src="/static/css/page_css/bootstrp.min.css"></script>
+    <!-- FOR IE9 below -->
+    <!--[if lt IE 9]>
+    <script src="/static/js/hot_js/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript">
+        function userhome(user) {
+            var _user = 'false'
+            if (_user.includes(user)) {
+                return window.alert("请先登入");
+            } else {
+                return window.location.href = '/people';
+            }
+        }
+    </script>
+</head>
+<body>
+<div id="fh5co-offcanvass">
+    <a href="#" class="fh5co-offcanvass-close js-fh5co-offcanvass-close">Menu <i class="icon-cross"></i> </a>
+    <h1 class="fh5co-logo"><a class="navbar-brand">推荐路线</a></h1>
+    <ul>
+        <li><a href="/views">首页</a></li>
+        <li><a href="/new_page">全部景点</a></li>
+        <li><a href="/hot-city">热门城市</a></li>
+        <li><a onclick="userhome({{ user }})">个人中心</a></li>
+    </ul>
+    <h3 class="fh5co-lead">loGIN</h3>
+    <p class="fh5co-social-icons">
+        <a href="/login"><i class="icon-twitter"></i></a>
+    </p>
+</div>
+<header id="fh5co-header" role="banner">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <a href="#" class="fh5co-menu-btn js-fh5co-menu-btn">Menu <i class="icon-menu"></i></a>
+                <a class="navbar-brand" href="#">推荐路线</a>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- END .header -->
+<div id="fh5co-main">
+    <div class="container">
+        <div class="row">
+            <div id="fh5co-board" data-columns>
+                {% autopaginate page 15 %}
+                {% for p in page %}
+                <div class="item">
+                    <div class="animate-box">
+                        <a href="/static/image/scenery_way_images/{{ p.is_on }}.jpg"
+                           class="image-popup fh5co-board-img"
+                           title="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, eos?"><img
+                                src="/static/image/scenery_way_images/{{ p.is_on }}.jpg"
+                                alt="Free HTML5 Bootstrap template" style="width: 300px"></a>
+                    </div>
+                    <div class="fh5co-desc"><a onclick="window.location.href='/way_info?way={{ p.is_on }}'">出游天数：{{ p.days }}天<br/>出发日期：{{ p.start_time }}<br/>城市：{{ p.scenerys }}<br/> {{ p.say_people }}人看过</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% paginate %}
+        </div>
+    </div>
+</div>
+<footer id="fh5co-footer">
+    <div class="container">
+        <div class="row row-padded">
+            <div class="col-md-12 text-center">
+                <p class="fh5co-social-icons">
+                    <a href="#"><i class="icon-twitter"></i></a>
+                </p>
+                <p><small>&copy; Hydrogen Free HTML5 Template. All Rights Reserved. <br>Designed by: <a href="#"
+                                                                                                        target="_blank">FREEHTML5.co</a>
+                    | Images by: <a href="#" target="_blank">Pexels</a> </small></p>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- jQuery -->
+<script src="/static/js/hot_js/jquery.min.js"></script>
+<!-- jQuery Easing -->
+<script src="/static/js/hot_js/jquery.easing.1.3.js"></script>
+<!-- Bootstrap -->
+<script src="/static/js/hot_js/bootstrap.min.js"></script>
+<!-- Waypoints -->
+<script src="/static/js/hot_js/jquery.waypoints.min.js"></script>
+<!-- Magnific Popup -->
+<script src="/static/js/hot_js/jquery.magnific-popup.min.js"></script>
+<!-- Salvattore -->
+<script src="/static/js/hot_js/salvattore.min.js"></script>
+<!-- Main JS -->
+<script src="/static/js/hot_js/main.js"></script>
+
+</body>
+</html>

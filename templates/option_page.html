@@ -1,0 +1,183 @@
+﻿{% load pagination_tags %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>评论</title>
+    <script src="/static/js/sakura.js"></script>
+    <script src="/static/js/page_js/jquery.min.js"></script>
+    <script src="/static/js/page_js/bootstrap.min.js"></script>
+    <script src="/static/css/page_css/bootstrp.min.css"></script>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .wrap {
+            width: 780px;
+            height: 880px;
+            margin: 0 auto;
+            box-shadow: 10px 10px 30px #ccc;
+            border-radius: 2px;
+            padding: 10px;
+            position: relative;
+            top: 50px;
+        }
+
+        .says {
+            width: 780px;
+            height: 200px;
+            position: absolute;
+        }
+
+        .says h1 {
+            font-size: 18px;
+            color: #A8A8A8;
+            margin-bottom: 5px;
+        }
+
+        textarea {
+            width: 760px;
+            height: 100px;
+            outline: none;
+            resize: none;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            padding: 5px;
+            color: #660000;
+        }
+
+        input {
+            width: 100px;
+            height: 30px;
+            border: none;
+            cursor: pointer;
+            background: #00CC66;
+            color: white;
+            border-radius: 2px;
+            position: absolute;
+            right: 10px;
+            bottom: 5px;
+            transition: all ease 0.4s;
+            font-size: 16px;
+        }
+
+        input:hover {
+            filter: alpha(opaciyt:70);
+            opacity: 0.7;
+        }
+
+        ul {
+            width: 750px;
+            height: 640px;
+            position: absolute;
+            bottom: 0;
+            overflow-x: hidden;
+            overflow-y: scroll;
+
+        }
+
+        li {
+            width: 750px;
+            border-bottom: 1px dotted #ccc;
+            list-style: none;
+            line-height: 57px;
+            font-size: 14px;
+            color: #606060;
+            overflow: hidden;
+            filter: alpha(opacity:0);
+            opacity: 0;
+
+        }
+
+        span {
+            float: right;
+            margin-right: 30px;
+        }
+
+        .errmsg {
+            font-size: 14px;
+            color: red;
+            font-weight: bold;
+            filter: alpha(opacity:0);
+            opacity: 0;
+        }
+
+        a {
+            font-size: 14px;
+            color: #990000;
+            text-decoration: none;
+            margin-left: 10px;
+        }
+
+        a:hover {
+            color: red;
+            text-decoration: underline;
+        }
+    </style>
+    <script>
+        function check(user) {
+            var _user = 'false'
+            if (_user.includes(user)) {
+                return window.alert("请先登入");
+            }
+        }
+    </script>
+</head>
+<body>
+<script src="/static/js/L2Dwidget.min.js"></script>
+<script>
+    L2Dwidget.init({
+        "model": {
+            "jsonPath": "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+            "scale": 1,
+            "hHeadPos": 0.5,
+            "vHeadPos": 0.618
+        },
+        "display": {"position": "left", "width": 200, "height": 200, "hOffset": 0, "vOffset": 0},
+        "mobile": {"show": true, "scale": 0.5},
+        "react": {"opacityDefault": 0.7, "opacityOnHover": 0.2}
+    });
+</script>
+<div class="wrap">
+    <div class="says">
+        <h1>来，说说你在做什么，想什么...</h1>
+        <form method="post">
+            {% csrf_token %}
+            <textarea name="option" required="请填写内容后再发布！"></textarea><input type="submit"
+                                                                                     onclick="check({{ arg }})"
+                                                                                     value="发布">
+            <div class="errmsg">请填写内容后再发布！</div>
+        </form>
+    </div>
+    <ul>
+        {% autopaginate page 10 %}
+        {% for p in page %}
+            <li style="height: 57px;opacity: 1">
+                {{ p.options }}
+                <span id="create_time">{{ p.options_time}} {{ p.user }}
+			 <a onclick="del('{{ o_arg }}','{{ p.options_time }}')">删除</a>
+			 </span>
+            </li>
+        {% endfor %}
+    </ul>
+    {% paginate %}
+</div>
+<script>
+    function del(user, create_time) {
+        var _user = 'false'
+        if (_user.includes(user)) {
+            window.location.href = '/option_page?scenery={{ scenery }}'
+            return window.alert("不可以删除别人的评论哦");
+        } else {
+            window.location.href = '/option_page?scenery={{ scenery }}&del=' + create_time
+            return window.alert("评论已删除")
+        }
+    }
+</script>
+<div style="text-align:center;margin:100px 0; font:normal 14px/24px 'MicroSoft YaHei';">
+    <p>适用浏览器：360、FireFox、Chrome、Safari、Opera、傲游、搜狗、世界之窗. 不支持IE8及以下浏览器。</p>
+</div>
+</body>
+</html>

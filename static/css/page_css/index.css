@@ -1,0 +1,347 @@
+body {
+    /*background: rgba(169, 246, 223, 0.6);*/
+    background-size: 100%;
+    background: url("/static/image/page_image/bg-2.jpg") no-repeat fixed;
+}
+
+.page-block {
+    width: 900px;
+    background: rgba(106, 243, 137, 0.31);
+    margin: auto auto;
+}
+
+.page-block h1 {
+    height: 80px;
+    text-align: center;
+}
+
+.article-hover {
+    height: 150px;
+    background: #b0d2c1;
+}
+
+.article-hover:hover {
+    background: #f2f8f5;
+}
+
+.thumbnail {
+    width: 250px;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    float: left;
+}
+
+.thumbnail img {
+    width: 250px;
+    height: 130px;
+    margin: 0 auto;
+}
+
+.info-content {
+    width: 750px;
+    height: 150px;
+    /*display: flex;*/
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.info-content a {
+    color: #000000;
+    text-decoration: none;
+    display: inline-block;
+    border: 1px solid #cdcdcd;
+    padding: 4px 10px 5px;
+    border-radius: 10px;
+}
+
+.info-content a:hover {
+    background: linear-gradient(to right, #FFCC00, #FF9900);
+    color: #fff;
+}
+
+.li-title {
+    width: 750px;
+    font-size: 24px;
+    font-weight: 400;
+    /*text-align: left;*/
+}
+
+.li-content {
+    width: 730px;
+    font-size: 16px;
+    font-weight: 400;
+    text-align: left;
+}
+
+.page-icon {
+    width: 1200px;
+    margin: 35px auto 0;
+    font-size: 0;
+    text-align: center;
+}
+
+.page-icon button {
+    border: none;
+    background-color: #efefef;
+    padding: 4px 10px 5px;
+    font-size: 20px;
+}
+
+.page-icon button:nth-child(3) {
+    cursor: default;
+}
+
+.page-icon button:nth-child(4) {
+    cursor: default;
+}
+
+.page-icon button img {
+    width: 15px;
+    height: 15px;
+}
+
+#totalPage {
+    cursor: default;
+    border: none;
+    background-color: #efefef;
+    padding: 4px 10px 5px;
+    font-size: 20PX;
+}
+
+#currentPage {
+    cursor: pointer;
+    border: none;
+    background-color: #efefef;
+    padding: 4px 10px 5px;
+    font-size: 20PX;
+    cursor: auto;
+    text-align: center;
+    width: 40px;
+}
+
+.page-1 {
+    display: block;
+}
+
+.page-2 {
+    display: none;
+}
+
+.page-3 {
+    display: none;
+}
+
+hr {
+    opacity: 50%;
+}
+
+.nav {
+    width: 100%;
+    height: 40px;
+    background-color: rgba(24, 175, 31, 0);
+}
+
+a {
+    text-decoration: none;
+}
+
+.document ul li {
+    margin-left: -50px;
+    height: 50px;
+    list-style: none;
+    line-height: 50px;
+    font-size: 20px;
+    float: left;
+    position: center;
+}
+
+.document ul li a {
+    display: block;
+    padding: 0 30px;
+    color: black;
+}
+
+.document ul li a:hover { /*鼠标滑过特效*/
+    border-bottom: 2px solid seagreen;
+    color: #05b6f6;
+}
+
+.search {
+    margin-left: 10px;
+    width: 400px; /*宽度要大于两个子盒子的宽度和，因为，行内块元素自己中间就有边距*/
+    height: 40px;
+    float: left;
+
+}
+
+.search input {
+    width: 300px;
+    height: 30px;
+    border: 2px solid rgba(46, 139, 87, 0);
+    border-right: 0;
+    margin-top: 8px;
+    padding-left: 15px;
+    color: gray;
+    font-size: 13px;
+}
+
+.search input:focus {
+    outline: medium; /*去掉 input 的点击边框*/
+}
+
+.search button {
+    width: 40px;
+    height: 34px;
+    border: 0; /*按钮button自己就带有边框，需要手动清除*/
+    margin-top: 8px;
+    float: left;
+}
+
+.log {
+    width: 800px;
+    height: 30px;
+    float: left;
+    text-align: end;
+    line-height: 30px;
+    margin-left: 50px;
+    /*left: 1000px;*/
+}
+
+.log button {
+    text-decoration: none;
+    font-size: 15px;
+    border: 0;
+    color: black;
+    background: rgba(79, 218, 207, 0);
+}
+
+.container {
+    max-width: 1140px;
+    margin: 0 auto;
+}
+
+.c-nav .show {
+    display: inline-block;
+}
+
+.c-nav .hiden {
+    display: none;
+}
+
+/* 导航栏 */
+.c-nav {
+    width: 100%;
+    background-color: black;
+
+}
+
+.c-nav .navFlex {
+    display: flex;
+    display: -webkit-flex;
+    justify-content: space-between;
+    -webkit-justify-content: space-between;
+    align-items: center;
+    -webkit-align-content: center;
+    color: white;
+}
+
+.c-nav ul {
+    list-style: none;
+    margin-bottom: 0px;
+    padding-left: 0px;
+}
+
+.c-nav ul li {
+    padding: 15px 0px 15px 0px;
+    margin-left: 30px;
+    display: inline-block;
+}
+
+.c-nav ul li a {
+    color: white;
+    padding-bottom: 2px;
+    text-decoration: none;
+    border-bottom: 3px solid transparent;
+}
+
+.c-nav ul li a:hover {
+    border-bottom: 3px solid #e4c17e;
+}
+
+.c-nav .logo {
+    height: 40px;
+}
+
+.c-nav .btnImg {
+    height: 20px;
+    width: 25px;
+    padding: 3px 8px 3px 8px;
+    box-sizing: content-box;
+    border: 1px solid transparent;
+}
+
+@media screen and (max-width: 1200px) {
+    .c-nav ul li {
+        margin-left: 20px;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .c-nav ul li {
+        margin-left: 10px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .c-nav ul li:nth-child(4), .c-nav ul li:nth-child(5) {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .c-nav {
+        background-color: rgba(176, 204, 243, 0.8);
+        padding: 10px 0px 10px 0px;
+        opacity: 0.9;
+    }
+
+    .c-nav .navFlex {
+        flex-wrap: wrap;
+        font-size: 20px;
+        justify-content: space-between;
+    }
+
+    .c-nav .logo {
+        height: 30px;
+    }
+
+    .c-nav ul li {
+        padding-top: 10px;
+        margin-left: 0px;
+        display: block;
+    }
+
+    .c-nav ul li a {
+        border-bottom: 3px solid transparent;
+    }
+
+    .c-nav ul a:hover {
+        border-bottom: 3px solid #e4c17e;
+    }
+
+    .c-nav ul li:nth-child(4), .c-nav ul li:nth-child(5) {
+        display: block;
+    }
+
+    .c-nav .hiden {
+        display: block;
+    }
+
+    .c-nav .show {
+        width: 100%;
+        font-size: 14px;
+        text-align: center;
+        display: none;
+    }
+}
