@@ -133,3 +133,12 @@ def update_way_status(user, df):
     return status, df.date.tolist()[0]
 
 # update_way_status('chexing')
+
+
+def get_add(is_on):
+    sql = """
+    SELECT location from scenery_adds WHERE scenery in 
+    (SELECT ways_scenery.scenery from ways_scenery right join scenery_adds on ways_scenery.scenery like scenery_adds.scenery WHERE is_on='{is_on}')""".format(is_on=is_on)
+    add_df = pd.read_sql(sql,con)
+    add_df[['location_1', 'location_2']] = add_df['location'].str.split(',', 1, expand=True)
+    return add_df[['location_1', 'location_2']].astype(float).to_numpy()

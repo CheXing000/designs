@@ -138,6 +138,7 @@ def save_scenery(request):
     _user = request.user
     if request.method == 'GET':
         arg = request.GET.get('del')
+        print(arg)
         if arg:
             d = UserScenery.objects.filter(user=_user, scenery=arg)
             d.delete()
@@ -146,6 +147,7 @@ def save_scenery(request):
 
 
 def user_safe(request):
+    print(request.user)
     user_safe = UserSafe.objects.filter(user_name=request.user)
     if request.user.is_authenticated:
         arg = 'true'
@@ -171,6 +173,7 @@ def user_safe(request):
         else:
             return render(request, 'user_safe.html', {'msg': '旧密码有误', 'user': arg, 'user_id': user_safe[0].user_id,
                                                       'user_name': user_safe[0].user_name})
+    print(user_safe)
     return render(request, 'user_safe.html',
                   {'msg': '', 'user': arg, 'user_id': user_safe[0].user_id, 'user_name': user_safe[0].user_name})
 
@@ -384,10 +387,7 @@ def make_way(request):
 def map(request):
     is_on= request.GET.get('is_on')
     if is_on:
-
-        a = [[114.179224, 22.290564],
-             [114.177727, 22.290578],
-             [114.236753, 22.293859],
-             [114.148369, 22.271431]]
+        a = get_add(is_on)
+        a = a.tolist()
         b = len(a)
-        return render(request, 'map.html',{'a':a,'b':b})
+        return render(request, 'map.html',{'a':a,'b':b,'center':a[0]})
