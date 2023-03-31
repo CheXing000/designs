@@ -28,8 +28,8 @@ class HotCity(admin.ModelAdmin):
 
 
 class Soption(admin.ModelAdmin):
-    list_display = ('id', 'user_id', 'user', 'create_time', 'update_time')
-    search_fields = ['user_id', 'user', 'create_time']
+    list_display = ('id', 'user', 'create_time', 'update_time')
+    search_fields = ['user', 'create_time']
 
 
 class Woption(admin.ModelAdmin):

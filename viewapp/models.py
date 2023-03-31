@@ -60,7 +60,6 @@ class HotCity(models.Model):
 
 
 class OptionScenery(models.Model):
-    user_id = models.CharField(max_length=45)
     user = models.CharField(max_length=45)
     options = models.CharField(max_length=255)
     scenery = models.CharField(max_length=45)

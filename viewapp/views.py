@@ -173,7 +173,6 @@ def user_safe(request):
         else:
             return render(request, 'user_safe.html', {'msg': '旧密码有误', 'user': arg, 'user_id': user_safe[0].user_id,
                                                       'user_name': user_safe[0].user_name})
-    print(user_safe)
     return render(request, 'user_safe.html',
                   {'msg': '', 'user': arg, 'user_id': user_safe[0].user_id, 'user_name': user_safe[0].user_name})
 
@@ -286,6 +285,7 @@ def way_info(request):
     way = Ways.objects.filter(is_on=is_on)
     pages = WayInfo.objects.filter(is_on=is_on)
     page = WayScenery.objects.filter(is_on=is_on)
+    print(way)
     return render(request, 'way_info.html',
                   {"user": _arg, "pages": pages, 'page': page, "way": way[0].scenerys, "date": way[0].days,
                    "is_on": is_on})
