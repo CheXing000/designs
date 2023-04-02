@@ -45,6 +45,27 @@
             }
         }
     </script>
+    <style>
+        h2 {
+          position: absolute;
+            left: 45%;
+            top: 50px;
+        }
+        .inone{
+            position: absolute;
+            left: 83%;
+            width: 230px;
+        }
+        .intwo{
+            position: absolute;
+            left: 43%;
+            width: 230px;
+        }
+        .btu{
+            position: absolute;
+            left: 150%;
+        }
+    </style>
 </head>
 <body>
 <div class="c-nav">
@@ -87,10 +108,10 @@
     <div class="box1">
         <form method="post">
             {% csrf_token %}
-            <a style="font-size: 20px;position: absolute;left: 100px">请先选择日期:</a>
+            <a style="font-size: 20px;position: absolute;left: 300px">请先选择日期:</a>
             <input class="intwo" type="date" name="date">
 
-            <a style="font-size: 20px;position: absolute;left: 500px">请输入景区:</a>
+            <a style="font-size: 20px;position: absolute;left: 720px">请输入景区:</a>
             <input class="inone" type="text" list="typelist" name="scenery" placeholder="输入内容">
             <datalist id="typelist">
                 <option>aaaa</option>
@@ -98,8 +119,11 @@
                 <option>ababab</option>
                 <option>ccccc</option>
             </datalist>
-            <button type="submit" onclick="get_allow({{ user }})">提交</button>
+            <button class="btu" type="submit" onclick="get_allow({{ user }})">提交</button>
         </form>
+    </div>
+    <div>
+        <h2> 旅游路线制作</h2>
     </div>
     <div class="page-block">
         {% autopaginate pages 50 %}
