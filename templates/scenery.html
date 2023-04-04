@@ -141,9 +141,14 @@
         }
     </script>
     <script type="text/javascript">
-        function get_love(scenery) {
-            window.alert("景点已添加到收藏中")
-            return window.location.href='/scenery/?is_save=1&scenery='+scenery
+        function get_love(scenery,user) {
+            var _user = 'false'
+            if (_user.includes(user)){
+                return window.alert("请先登入")
+            }else{
+                window.alert("景点已添加到收藏中")
+                return window.location.href = '/scenery/?is_save=1&scenery=' + scenery
+                }
         }
     </script>
     <script src="/static/js/L2Dwidget.min.js"></script>
@@ -221,7 +226,7 @@
                 <div id="test" style="font-size: 20px"><strong id="SCENERY">{{ scenery_name }}</strong>
                     <p>{{ scenery_mark }}</p></div>
                 <div class="btn-box">
-                    <button onclick="get_love('{{ scenery_name }}')">收藏</button>
+                    <button onclick="get_love('{{ scenery_name }}','{{ user }}')">收藏</button>
                 </div>
                 <a href="/option_page?scenery={{ scenery_name }}">
                     xxx人评价

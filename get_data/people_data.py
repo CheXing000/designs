@@ -1,5 +1,6 @@
 from pymysql import Connect, connect
 import pandas as pd
+import datetime
 
 con = Connect(host='localhost', port=3306, user='root', password='123456', database='edu_design', charset='utf8')
 conn = connect(host='localhost', port=3306, user='root', password='123456', database='edu_design', charset='utf8')
@@ -45,17 +46,18 @@ def get_way_info(is_on):
 
 
 def get_scenery_info(scenery_name):
-    sql = """SELECT scenery_web.scenery_name, `scenery_web`.mark,`scenery`.city FROM `scenery_web` 
+    sql = """SELECT scenery_web.scenery_name, `scenery_web`.mark,`scenery`.city,`scenery`.image_name FROM `scenery_web` 
      JOIN scenery on scenery_web.scenery_name=scenery.scenery where scenery_name='{}'""".format(scenery_name)
     df = pd.read_sql(sql, con)
     if df.empty:
         return {}
-    return {'mark': df.mark.values.tolist()[0], 'city': df.city.values.tolist()[0]}
+    return {'mark': df.mark.values.tolist()[0], 'city': df.city.values.tolist()[0],
+            'image_name': df.image_name.values.tolist()[0]}
 
 
 def save_way(value_list):
-    sql = """insert into user_way (`city`,`date`,`mark`,`user`,`scenery`,`say_people`,is_web) values 
-    (%s,%s,%s,%s,%s,%s,%s)"""
+    sql = """insert into user_way (`city`,`date`,`mark`,`user`,`scenery`,`say_people`,is_web,`image_name`) values 
+    (%s,%s,%s,%s,%s,%s,%s,%s)"""
     cur = conn.cursor()
     cur.executemany(sql, [value_list])
     conn.commit()
@@ -79,10 +81,9 @@ def update_way_status(user, df):
     sql = """SELECT id,city,date,scenery,mark,say_people from user_way WHERE `user` = '{user}' and is_web='0' ORDER BY create_time""".format(
         user=user)
     sql1 = """select is_on from ways order by is_on desc limit 1"""
-    if df .empty:
+    if df.empty:
         df = pd.read_sql(sql, con)
     df = df[['id', 'city', 'date', 'scenery', 'mark', 'say_people']]
-    print(df)
     if df.empty:
         return False, 0
     df1 = pd.read_sql(sql1, con)
@@ -93,16 +94,17 @@ def update_way_status(user, df):
     df1['is_on'] = df1['is_on'] + 1
     df1['see_people'] = 1
     df1['start_time'] = min(df.drop_duplicates(subset=['date']).date.values.tolist())
-    in_ways = """insert into ways_copy1({columns}) values (%s,%s,%s,%s,%s)""".format(
+    df1['create_time'] = datetime.datetime.now()
+    in_ways = """insert into ways({columns}) values (%s,%s,%s,%s,%s,%s)""".format(
         columns=','.join(df1.columns.tolist()))
     df2 = df[['city', 'date']]
     df2['is_on'] = df1.is_on.values.tolist()[0]
     df2.rename(columns={'city': 'address'}, inplace=True)
-    in_way_info = """insert into ways_info_copy1 ({columns}) values(%s,%s,%s)""".format(
+    in_way_info = """insert into ways_info ({columns}) values(%s,%s,%s)""".format(
         columns=','.join(df2.columns.tolist()))
     df3 = df[['date', 'scenery', 'mark']]
     df3['is_on'] = df1.is_on.values.tolist()[0]
-    in_way_scenery = """insert into ways_scenery_copy1({columns})values (%s,%s,%s,%s)""".format(
+    in_way_scenery = """insert into ways_scenery({columns})values (%s,%s,%s,%s)""".format(
         columns=','.join(df3.columns.tolist()))
     df4 = df[['id']]
     df4['is_web'] = '1'
@@ -110,13 +112,10 @@ def update_way_status(user, df):
     df5 = df1.copy()
     df5['end_time'] = max(df.drop_duplicates(subset=['date']).date.values.tolist())
     df5.rename(columns={'see_people': 'say_people'}, inplace=True)
-    print(user)
     df5['user'] = str(user)
     df5 = df5[['scenerys', 'start_time', 'end_time', 'days', 'say_people', 'is_on', 'user']]
-    print(df5)
     in_user_detil = """insert into user_way_detail({columns})values (%s,%s,%s,%s,%s,%s,%s)""".format(
         columns=','.join(df5.columns.tolist()))
-    print(in_user_detil)
     cursor = conn.cursor()
     cursor.execute('SET autocommit = 0')
     try:
@@ -130,7 +129,8 @@ def update_way_status(user, df):
         conn.rollback()
     finally:
         conn.commit()
-    return status, df.date.tolist()[0]
+    return status, df1.is_on.tolist()[0]
+
 
 # update_way_status('chexing')
 
@@ -138,7 +138,15 @@ def update_way_status(user, df):
 def get_add(is_on):
     sql = """
     SELECT location from scenery_adds WHERE scenery in 
-    (SELECT ways_scenery.scenery from ways_scenery right join scenery_adds on ways_scenery.scenery like scenery_adds.scenery WHERE is_on='{is_on}')""".format(is_on=is_on)
-    add_df = pd.read_sql(sql,con)
+    (SELECT ways_scenery.scenery from ways_scenery right join scenery_adds on ways_scenery.scenery like scenery_adds.scenery WHERE is_on='{is_on}')""".format(
+        is_on=is_on)
+    add_df = pd.read_sql(sql, con)
     add_df[['location_1', 'location_2']] = add_df['location'].str.split(',', 1, expand=True)
     return add_df[['location_1', 'location_2']].astype(float).to_numpy()
+
+
+def get_way_name(is_on):
+    # sql = f"""select scenerys,days from ways where is_on={is_on}"""
+    sql = """SELECT scenerys,days from ways ORDER BY create_time DESC"""
+    df = pd.read_sql(sql, con)
+    return df.iloc[[0],:]

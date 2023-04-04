@@ -129,8 +129,7 @@ def save_ways(request):
         if arg:
             d = UserWays.objects.filter(user=_user, is_on=arg)
             d.delete()
-    page = UserWays.objects.all()
-    print(page)
+    page = UserWays.objects.filter(user=_user)
     return render(request, 'save_way.html', {'page': page, 'user': 'true'})
 
 
@@ -138,11 +137,10 @@ def save_scenery(request):
     _user = request.user
     if request.method == 'GET':
         arg = request.GET.get('del')
-        print(arg)
         if arg:
             d = UserScenery.objects.filter(user=_user, scenery=arg)
             d.delete()
-    page = UserScenery.objects.all()
+    page = UserScenery.objects.filter(user=_user)
     return render(request, 'save_scenery.html', {'page': page, 'user': 'true'})
 
 
@@ -189,6 +187,7 @@ def scenery_page(request):
         user_scenery.scenery = arg
         user_scenery.mark = scenery_list[0].mark
         user_scenery.rank = scenery_list[0].rank
+        user_scenery.image_name = city[0].image_name
         user_scenery.save()
     if request.user.is_authenticated:
         user = 'true'
@@ -282,12 +281,12 @@ def way_info(request):
     if is_on in ('/way_info/', ''):
         page = Ways.objects.all()
         return render(request, 'hot_way.html', {'page': page})
-    way = Ways.objects.filter(is_on=is_on)
+    way = get_way_name(is_on)
+
     pages = WayInfo.objects.filter(is_on=is_on)
     page = WayScenery.objects.filter(is_on=is_on)
-    print(way)
     return render(request, 'way_info.html',
-                  {"user": _arg, "pages": pages, 'page': page, "way": way[0].scenerys, "date": way[0].days,
+                  {"user": _arg, "pages": pages, 'page': page, "way": way.scenerys.values.tolist()[0], "date": way.days.values.tolist()[0],
                    "is_on": is_on})
 
 
@@ -342,7 +341,7 @@ def make_way(request):
         date = request.POST.get('date')
         info = get_scenery_info(scenery)
         if not UserWay.objects.filter(user=_user, is_web='0', scenery=scenery, date=date).exists() and info:
-            value = [info.get('city'), date, info.get('mark'), _user, scenery, '1', '0']
+            value = [info.get('city'), date, info.get('mark'), _user, scenery, '1', '0',info.get('image_name')]
             save_way(value)
         time.sleep(1)
         page = UserWay.objects.filter(user=_user, is_web='0').order_by('date')
@@ -371,14 +370,9 @@ def make_way(request):
             page = UserWay.objects.filter(user=_user, is_web='0').order_by('create_time')
             df = pd.DataFrame(list(page.values()))
             status, is_on = update_way_status(_user, df)
-            print(status)
             if status:
-                way = Ways.objects.filter(is_on=is_on)
-                _pages = WayInfo.objects.filter(is_on=is_on)
-                _page = WayScenery.objects.filter(is_on=is_on)
-
-                return render(request, 'way_info.html',
-                              {"pages": _pages, 'page': _page, "way": 'bbbb', "date": 'aaa'})
+                time.sleep(1)
+                return redirect('/way_info?is_on={is_on}'.format(is_on=is_on))
             else:
                 return render(request, 'make_way.html',
                               {'status': 'false', 'is_on': is_on, 'page': [], 'pages': [], 'user': user})

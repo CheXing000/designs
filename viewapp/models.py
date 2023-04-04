@@ -1,4 +1,5 @@
 from django.db import models
+import datetime
 
 
 # Create your models here.
@@ -94,13 +95,14 @@ class Ways(models.Model):
     days = models.CharField(max_length=45)
     say_people = models.IntegerField()
     is_on = models.CharField(max_length=45)
+    create_time = models.CharField(max_length=80)
 
     class Meta:
         db_table = 'all_way'
         verbose_name = '路线管理'
         verbose_name_plural = verbose_name
 
-
+# 未写
 class WayInfo(models.Model):
     address = models.CharField(max_length=85)
     date = models.CharField(max_length=85)
@@ -137,6 +139,7 @@ class UserWay(models.Model):
     user = models.CharField(max_length=85)
     say_people = models.CharField(max_length=85)
     is_web = models.CharField(max_length=85)
+    image_name = models.CharField(max_length=85)
     create_time = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -195,6 +198,7 @@ class UserScenery(models.Model):
     city = models.CharField(max_length=85)
     mark = models.CharField(max_length=85)
     rank = models.CharField(max_length=85)
+    image_name = models.CharField(max_length=85)
     create_time = models.DateTimeField(auto_now_add=True)
 
     class Meta:
