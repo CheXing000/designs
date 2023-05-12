@@ -21,5 +21,7 @@ urlpatterns = [
     path('save_way/', views.save_ways),
     path('save_scenery/', views.save_scenery),
     path('user_safe/', views.user_safe),
-    path('map/',views.map)
+    path('map/',views.map),
+    path('scenery_data/',views.SceneryView.as_view()),
+    path('scenery_datas/',views.ScenerysView.as_view())
 ]

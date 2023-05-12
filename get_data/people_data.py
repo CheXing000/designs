@@ -1,5 +1,8 @@
+import time
+
 from pymysql import Connect, connect
 import pandas as pd
+import numpy as np
 import datetime
 
 con = Connect(host='localhost', port=3306, user='root', password='123456', database='edu_design', charset='utf8')
@@ -119,10 +122,10 @@ def update_way_status(user, df):
     cursor = conn.cursor()
     cursor.execute('SET autocommit = 0')
     try:
+        cursor.executemany(in_way_scenery, df3.values.tolist())
         cursor.executemany(update_sql, df4[['is_web', 'id']].values.tolist())
         cursor.executemany(in_ways, df1.values.tolist())
         cursor.executemany(in_way_info, df2.values.tolist())
-        cursor.executemany(in_way_scenery, df3.values.tolist())
         cursor.executemany(in_user_detil, df5.values.tolist())
         status = True
     except:
@@ -137,16 +140,16 @@ def update_way_status(user, df):
 
 def get_add(is_on):
     sql = """
-    SELECT location from scenery_adds WHERE scenery in 
-    (SELECT ways_scenery.scenery from ways_scenery right join scenery_adds on ways_scenery.scenery like scenery_adds.scenery WHERE is_on='{is_on}')""".format(
-        is_on=is_on)
-    add_df = pd.read_sql(sql, con)
+SELECT ways_scenery.scenery,scenery_adds.location,ways_scenery.is_on from ways_scenery 
+join scenery_adds on ways_scenery.scenery like scenery_adds.scenery where ways_scenery.is_on = '{is_on}' """.format(is_on=is_on)
+    add_df = pd.read_sql(sql, conn)
+    if add_df.empty:
+        return {'error':'路线景区经纬度未保存到数据库中'}
     add_df[['location_1', 'location_2']] = add_df['location'].str.split(',', 1, expand=True)
     return add_df[['location_1', 'location_2']].astype(float).to_numpy()
 
 
 def get_way_name(is_on):
-    # sql = f"""select scenerys,days from ways where is_on={is_on}"""
-    sql = """SELECT scenerys,days from ways ORDER BY create_time DESC"""
-    df = pd.read_sql(sql, con)
-    return df.iloc[[0],:]
+    sql = """SELECT scenerys,days from ways where is_on='{is_on}'""".format(is_on=is_on)
+    df = pd.read_sql(sql, conn)
+    return df

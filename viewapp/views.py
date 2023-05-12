@@ -3,9 +3,12 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
 from get_data.people_data import *
 from viewapp.models import *
+from django.http import JsonResponse
 from urllib import parse
+from viewapp.serializer import *
 import time
-
+from rest_framework.views import APIView
+from  rest_framework.response import Response
 
 def page_new(request):
     if request.user.is_authenticated:
@@ -145,8 +148,6 @@ def save_scenery(request):
 
 
 def user_safe(request):
-    print(request.user)
-    user_safe = UserSafe.objects.filter(user_name=request.user)
     if request.user.is_authenticated:
         arg = 'true'
     else:
@@ -162,17 +163,17 @@ def user_safe(request):
                 user.save()
                 arg = 'false'
                 return render(request, 'user_safe.html',
-                              {'user': arg, 'msg': '密码修改成功,请重新登入', 'user_id': user_safe[0].user_id,
-                               'user_name': user_safe[0].user_name})
+                              {'user': arg, 'msg': '密码修改成功,请重新登入',
+                               'user_name': request.user})
             else:
                 return render(request, 'user_safe.html',
-                              {'msg': '两次密码不一致', 'user': arg, 'user_id': user_safe[0].user_id,
-                               'user_name': user_safe[0].user_name})
+                              {'msg': '两次密码不一致', 'user': arg,
+                               'user_name': request.user})
         else:
-            return render(request, 'user_safe.html', {'msg': '旧密码有误', 'user': arg, 'user_id': user_safe[0].user_id,
-                                                      'user_name': user_safe[0].user_name})
+            return render(request, 'user_safe.html', {'msg': '旧密码有误', 'user': arg,
+                                                      'user_name': request.user})
     return render(request, 'user_safe.html',
-                  {'msg': '', 'user': arg, 'user_id': user_safe[0].user_id, 'user_name': user_safe[0].user_name})
+                  {'msg': '', 'user': arg, 'user_name': request.user})
 
 
 def scenery_page(request):
@@ -282,9 +283,9 @@ def way_info(request):
         page = Ways.objects.all()
         return render(request, 'hot_way.html', {'page': page})
     way = get_way_name(is_on)
-
     pages = WayInfo.objects.filter(is_on=is_on)
     page = WayScenery.objects.filter(is_on=is_on)
+
     return render(request, 'way_info.html',
                   {"user": _arg, "pages": pages, 'page': page, "way": way.scenerys.values.tolist()[0], "date": way.days.values.tolist()[0],
                    "is_on": is_on})
@@ -371,7 +372,6 @@ def make_way(request):
             df = pd.DataFrame(list(page.values()))
             status, is_on = update_way_status(_user, df)
             if status:
-                time.sleep(1)
                 return redirect('/way_info?is_on={is_on}'.format(is_on=is_on))
             else:
                 return render(request, 'make_way.html',
@@ -382,6 +382,28 @@ def map(request):
     is_on= request.GET.get('is_on')
     if is_on:
         a = get_add(is_on)
+        print(a)
+        if isinstance(a,dict):
+            data = {
+                'response':'路线可视化加载失败',
+                'error':'路线景区经纬度未找到',
+            }
+            return JsonResponse(data,json_dumps_params={'ensure_ascii': False},content_type='application/json; charset=utf-8')
         a = a.tolist()
         b = len(a)
         return render(request, 'map.html',{'a':a,'b':b,'center':a[0]})
+
+
+class SceneryView(APIView):
+    def get(self,request):
+        scenery_list = SceneryAll.objects.values('city').distinct()
+        serializer = ScenerySerializer(instance=scenery_list, many=True)
+        return Response(serializer.data)
+
+class ScenerysView(APIView):
+
+    def get(self,request):
+        city = request.GET.get('city')
+        scenery_list = SceneryAll.objects.filter(city=city)
+        serializer = ScenerysSerializer(instance=scenery_list,many=True)
+        return Response(serializer.data)

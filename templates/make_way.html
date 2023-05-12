@@ -45,6 +45,38 @@
             }
         }
     </script>
+    <script>
+        $(function (){
+            $.ajax({
+            type:'get',
+            url:'/scenery_data/',
+            dataType:'json',
+            async:false,
+            success:function(res){
+                for(var i=0;i<res.length;i++){
+                    $("#city").append("<option>"+res[i].city+"</option>");
+                }
+            },
+        });
+            $("#city").change(function (){
+               var city = $(this).val();
+                {#$(this).nextAll().remove();#}
+               $.ajax({
+                    url:'/scenery_datas/?city='+city,
+                    type:'get',
+                    data:{},
+                    dataType: 'json',
+                    success:function (res){
+                        if(res.length<1)
+                            return;
+                        for(var i=0;i<res.length;i++){
+                            $('#scenery').append('<option>'+res[i].scenery+'</option>');
+                        }
+                    }
+                })
+            });
+        });
+    </script>
     <style>
         h2 {
           position: absolute;
@@ -53,17 +85,22 @@
         }
         .inone{
             position: absolute;
-            left: 83%;
-            width: 230px;
+            left: 78%;
+            width: 150px;
         }
         .intwo{
             position: absolute;
             left: 43%;
-            width: 230px;
+            width: 200px;
+        }
+        .incity{
+            position: absolute;
+            left: 95%;
+            width: 200px;
         }
         .btu{
             position: absolute;
-            left: 150%;
+            left: 180%;
         }
     </style>
 </head>
@@ -108,17 +145,16 @@
     <div class="box1">
         <form method="post">
             {% csrf_token %}
-            <a style="font-size: 20px;position: absolute;left: 300px">请先选择日期:</a>
+            <a style="font-size: 18px;position: absolute;left: 300px">请先选择日期:</a>
             <input class="intwo" type="date" name="date">
 
-            <a style="font-size: 20px;position: absolute;left: 720px">请输入景区:</a>
-            <input class="inone" type="text" list="typelist" name="scenery" placeholder="输入内容">
-            <datalist id="typelist">
-                <option>aaaa</option>
-                <option>bbbb</option>
-                <option>ababab</option>
-                <option>ccccc</option>
-            </datalist>
+            <a style="font-size: 18px;position: absolute;left: 670px">请输入景区:</a>
+            <select class="inone" id="city">
+                <option>请选择</option>
+            </select>
+            <select class="incity" id="scenery" name="scenery">
+                <option>请先选择城市</option>
+            </select>
             <button class="btu" type="submit" onclick="get_allow({{ user }})">提交</button>
         </form>
     </div>

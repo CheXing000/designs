@@ -148,7 +148,7 @@ class GetData(object):
         return df
 
     def get_info(self):
-        for i in range(13, 50):
+        for i in range(1, 100):
             url = 'https://place.qyer.com/china/citylist-0-0-{page}/'.format(page=i)
             city_html = self.get_data(url)
             city_df = self.etl_city_html(city_html)
