@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from get_data.people_data import *
 from viewapp.models import *
@@ -401,6 +402,24 @@ def logouts(request):
     return render(request,'views.html',{'user':'false'})
 
 
+def user_save_way(request):
+    is_on =request.GET.get('is_on')
+    way_list = Ways.objects.filter(is_on=is_on)
+    user_way = UserWays()
+    user_way.user = request.user
+    user_way.is_on = is_on
+    user_way.scenerys = way_list[0].scenerys
+    user_way.days = way_list[0].days
+    user_way.say_people = way_list[0].say_people
+    user_way.start_time = way_list[0].start_time
+    user_way.end_time = way_list[0].start_time[:-2]+str(int((way_list[0].start_time)[-2:])+int(way_list[0].days)-1)
+    user_way.save()
+    return redirect(f"/way_info/?is_on={is_on}")
+
+
+
+
+
 class SceneryView(APIView):
     def get(self, request):
         scenery_list = SceneryAll.objects.values('city').distinct()
@@ -415,3 +434,30 @@ class ScenerysView(APIView):
         scenery_list = SceneryAll.objects.filter(city=city)
         serializer = ScenerysSerializer(instance=scenery_list, many=True)
         return Response(serializer.data)
+
+
+class WayView(APIView):
+    def get(self,request):
+        is_on = request.GET.get('is_on')
+        way_info_list = Ways.objects.filter(is_on=is_on)
+        serializer = WaysSerialezer(instance=way_info_list,many=True)
+        date = (serializer.data)[0].get('start_time')
+        day = int((serializer.data[0]).get('days'))+int(date[-2:])-1
+        (serializer.data[0])['end_time'] = date[:-2]+str(day)
+        (serializer.data[0])['user'] = str(request.user)
+        return Response(serializer.data)
+
+
+class UserwayView(APIView):
+
+    @csrf_exempt
+    def post(self,request):
+
+        serializer = UserwaySerialezer(data=request.data,many=True)
+        print(serializer)
+        if serializer.is_valid():
+            data = UserWays.objects.create(**(serializer.data)[0])
+            serializer = UserwaySerialezer(instance=data)
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors)

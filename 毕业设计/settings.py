@@ -142,4 +142,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 PAGINATION_PREVIOUS_LINK_DECORATOR = "&lsaquo;&lsaquo;"
 PAGINATION_NEXT_LINK_DECORATOR = '&rsaquo;&rsaquo;'
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    )
+}
+
 
