@@ -81,12 +81,12 @@ def get_date(df):
 
 def update_way_status(user, df):
     status = False
-    sql = """SELECT id,city,date,scenery,mark,say_people from user_way WHERE `user` = '{user}' and is_web='0' ORDER BY create_time""".format(
+    sql = """SELECT id,city,date,scenery,mark,say_people,image_name from user_way WHERE `user` = '{user}' and is_web='0' ORDER BY create_time""".format(
         user=user)
-    sql1 = """select is_on from ways order by is_on desc limit 1"""
+    sql1 = """select is_on from all_way order by is_on desc limit 1"""
     if df.empty:
         df = pd.read_sql(sql, con)
-    df = df[['id', 'city', 'date', 'scenery', 'mark', 'say_people']]
+    df = df[['id', 'city', 'date', 'scenery', 'mark', 'say_people','image_name']]
     if df.empty:
         return False, 0
     df1 = pd.read_sql(sql1, con)
@@ -94,20 +94,22 @@ def update_way_status(user, df):
     dates = [min(df.drop_duplicates(subset=['date']).date.values.tolist()),
              max(df.drop_duplicates(subset=['date']).date.values.tolist())]
     df1['days'] = (pd.to_datetime(dates[1]) - pd.to_datetime(dates[0])).days + 1
-    df1['is_on'] = df1['is_on'] + 1
+    df1['is_on'] = df1['is_on'].astype(int) + 1
     df1['see_people'] = 1
     df1['start_time'] = min(df.drop_duplicates(subset=['date']).date.values.tolist())
     df1['create_time'] = datetime.datetime.now()
-    in_ways = """insert into ways({columns}) values (%s,%s,%s,%s,%s,%s)""".format(
+    df1.rename(columns={'see_people':'say_people'},inplace=True)
+    in_ways = """insert into all_way({columns}) values (%s,%s,%s,%s,%s,%s)""".format(
         columns=','.join(df1.columns.tolist()))
     df2 = df[['city', 'date']]
     df2['is_on'] = df1.is_on.values.tolist()[0]
     df2.rename(columns={'city': 'address'}, inplace=True)
     in_way_info = """insert into ways_info ({columns}) values(%s,%s,%s)""".format(
         columns=','.join(df2.columns.tolist()))
-    df3 = df[['date', 'scenery', 'mark']]
+    df3 = df[['date', 'scenery', 'mark', 'image_name']]
     df3['is_on'] = df1.is_on.values.tolist()[0]
-    in_way_scenery = """insert into ways_scenery({columns})values (%s,%s,%s,%s)""".format(
+    df3['image_name'] = 'page_image/scenery_image/'+df3['image_name']
+    in_way_scenery = """insert into ways_scenery({columns})values (%s,%s,%s,%s,%s)""".format(
         columns=','.join(df3.columns.tolist()))
     df4 = df[['id']]
     df4['is_web'] = '1'
@@ -146,10 +148,10 @@ join scenery_adds on ways_scenery.scenery like scenery_adds.scenery where ways_s
     if add_df.empty:
         return {'error':'路线景区经纬度未保存到数据库中'}
     add_df[['location_1', 'location_2']] = add_df['location'].str.split(',', 1, expand=True)
-    return add_df[['location_1', 'location_2']].astype(float).to_numpy()
+    return add_df[['location_1', 'location_2']].dropna().astype(float).to_numpy()
 
 
 def get_way_name(is_on):
-    sql = """SELECT scenerys,days from ways where is_on='{is_on}'""".format(is_on=is_on)
+    sql = """SELECT scenerys,days from all_way where is_on='{is_on}'""".format(is_on=is_on)
     df = pd.read_sql(sql, conn)
     return df

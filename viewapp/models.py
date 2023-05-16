@@ -122,6 +122,7 @@ class WayScenery(models.Model):
     scenery = models.CharField(max_length=255)
     mark = models.CharField(max_length=45)
     is_on = models.CharField(max_length=45)
+    image_name = models.CharField(max_length=255)
     create_time = models.DateTimeField(auto_now_add=True)
     update_time = models.DateTimeField(auto_now=True)
 

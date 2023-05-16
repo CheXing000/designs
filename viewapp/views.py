@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from get_data.people_data import *
 from viewapp.models import *
@@ -8,7 +8,8 @@ from urllib import parse
 from viewapp.serializer import *
 import time
 from rest_framework.views import APIView
-from  rest_framework.response import Response
+from rest_framework.response import Response
+
 
 def page_new(request):
     if request.user.is_authenticated:
@@ -49,7 +50,7 @@ def login_page(request):
             user = authenticate(username=username, password=password)
             if user:
                 login(request, user)
-                return render(request, 'views.html', )
+                return render(request, 'views.html',{'user':'true'} )
             else:
                 return render(request, 'login.html', {"error_msg": "用户或密码错误"})
 
@@ -285,9 +286,9 @@ def way_info(request):
     way = get_way_name(is_on)
     pages = WayInfo.objects.filter(is_on=is_on)
     page = WayScenery.objects.filter(is_on=is_on)
-
     return render(request, 'way_info.html',
-                  {"user": _arg, "pages": pages, 'page': page, "way": way.scenerys.values.tolist()[0], "date": way.days.values.tolist()[0],
+                  {"user": _arg, "pages": pages, 'page': page, "way": way.scenerys.values.tolist()[0],
+                   "date": way.days.values.tolist()[0],
                    "is_on": is_on})
 
 
@@ -342,7 +343,7 @@ def make_way(request):
         date = request.POST.get('date')
         info = get_scenery_info(scenery)
         if not UserWay.objects.filter(user=_user, is_web='0', scenery=scenery, date=date).exists() and info:
-            value = [info.get('city'), date, info.get('mark'), _user, scenery, '1', '0',info.get('image_name')]
+            value = [info.get('city'), date, info.get('mark'), _user, scenery, '1', '0', info.get('image_name')]
             save_way(value)
         time.sleep(1)
         page = UserWay.objects.filter(user=_user, is_web='0').order_by('date')
@@ -379,31 +380,38 @@ def make_way(request):
 
 
 def map(request):
-    is_on= request.GET.get('is_on')
+    is_on = request.GET.get('is_on')
     if is_on:
         a = get_add(is_on)
         print(a)
-        if isinstance(a,dict):
+        if isinstance(a, dict):
             data = {
-                'response':'路线可视化加载失败',
-                'error':'路线景区经纬度未找到',
+                'response': '路线可视化加载失败',
+                'error': '路线景区经纬度未找到',
             }
-            return JsonResponse(data,json_dumps_params={'ensure_ascii': False},content_type='application/json; charset=utf-8')
+            return JsonResponse(data, json_dumps_params={'ensure_ascii': False},
+                                content_type='application/json; charset=utf-8')
         a = a.tolist()
         b = len(a)
-        return render(request, 'map.html',{'a':a,'b':b,'center':a[0]})
+        return render(request, 'map.html', {'a': a, 'b': b, 'center': a[0]})
+
+
+def logouts(request):
+    logout(request=request)
+    return render(request,'views.html',{'user':'false'})
 
 
 class SceneryView(APIView):
-    def get(self,request):
+    def get(self, request):
         scenery_list = SceneryAll.objects.values('city').distinct()
         serializer = ScenerySerializer(instance=scenery_list, many=True)
         return Response(serializer.data)
 
+
 class ScenerysView(APIView):
 
-    def get(self,request):
+    def get(self, request):
         city = request.GET.get('city')
         scenery_list = SceneryAll.objects.filter(city=city)
-        serializer = ScenerysSerializer(instance=scenery_list,many=True)
+        serializer = ScenerysSerializer(instance=scenery_list, many=True)
         return Response(serializer.data)
