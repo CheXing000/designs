@@ -18,7 +18,6 @@ class WaysSerialezer(serializers.Serializer):
     is_on = serializers.CharField(max_length=45)
 
 
-
 class UserwaySerialezer(serializers.Serializer):
     scenerys = serializers.CharField(max_length=85)
     user = serializers.CharField(max_length=85)
@@ -28,3 +27,8 @@ class UserwaySerialezer(serializers.Serializer):
     say_people = serializers.IntegerField()
     is_on = serializers.CharField(max_length=45)
 
+
+# class UserwaySerialezer(serializers.ModelSerializer):
+#     class Meta:
+#         model = UserWays
+#         fields = ('scenerys', 'user', 'start_time', 'end_time', 'days', 'say_people', 'is_on')

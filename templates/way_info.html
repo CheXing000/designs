@@ -109,32 +109,17 @@
         }
     </script>
     <script>
-        function save(is_on){
-            window.alert("路线收藏成功")
+        function save(user){
+
+            var a = 'false'
+            if (a.includes(user)) {
+                alert("请先登入")
+            } else {
+                 window.alert("路线收藏成功")
             return window.location.href="/user_save_way/?is_on={{ is_on }}"
+            }
         }
     </script>
-{#    <script>#}
-{#        function save(is_on){#}
-{#            $.ajax({#}
-{#            type:'get',#}
-{#            url:'/way_data/?is_on='+is_on,#}
-{#            dataType:'json',#}
-{#            async:false,#}
-{#            success:function(res){#}
-{#                console.log(res)#}
-{#                $.ajax({#}
-{#                    type:'post',#}
-{#                    url:'/add_userway/',#}
-{#                    dataType: 'json',#}
-{#                    data:res[0],#}
-{#                    async: 'false',#}
-{#                    success:window.alert("收藏成功")#}
-{#                })#}
-{#                }#}
-{#        });#}
-{#        }#}
-{#    </script>#}
 </head>
 <body>
 <div class="c-nav">
@@ -185,7 +170,7 @@
             </div>
             <div class="flexItem show">
                 <ul>
-                    <li><a onclick="save({{ is_on }})" target="_blank">收藏路线</a></li>
+                    <li><a onclick="save({{ user }})" target="_blank">收藏路线</a></li>
                     <li><a href="/make_way" target="_blank">设计路线</a></li>
                     <li><a href="/map?is_on={{ is_on }}" target="_blank">展示路线</a></li>
                     <li><a href="/way_option?is_on={{ is_on }}" target="_blank">查看评论</a></li>
@@ -243,11 +228,5 @@
         "react": {"opacityDefault": 0.7, "opacityOnHover": 0.2}
     });
 </script>
-<div>
-    <p style="position: fixed;top:92%;left:400px"><small>&copy; Hydrogen Free HTML5 Template. All Rights Reserved.
-        Designed by: <a href="#"
-                        target="_blank">FREEHTML5.co</a>
-        | Images by: <a href="#" target="_blank">Pexels</a> </small></p>
-</div>
 </body>
 </html>

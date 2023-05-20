@@ -3,7 +3,6 @@ from django.contrib.auth import login, authenticate, logout
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from get_data.people_data import *
-from viewapp.models import *
 from django.http import JsonResponse
 from urllib import parse
 from viewapp.serializer import *
@@ -20,7 +19,6 @@ def page_new(request):
     url = request.get_full_path()
     arg = url.split('=')[-1]
     arg = parse.unquote(arg)
-    print(arg)
     if 'new_page' in arg or arg.isdigit():
         arg = '中国'
         scenery_list = SceneryAll.objects.all()
@@ -28,7 +26,6 @@ def page_new(request):
         scenery_list = SceneryAll.objects.filter(city=arg)
     if not scenery_list:
         scenery_list = SceneryAll.objects.filter(scenery=arg)
-        print(scenery_list)
     return render(request, 'new_page.html', {'page': scenery_list, 'user': user, 'the_value': arg})
 
 
@@ -51,7 +48,7 @@ def login_page(request):
             user = authenticate(username=username, password=password)
             if user:
                 login(request, user)
-                return render(request, 'views.html',{'user':'true'} )
+                return render(request, 'views.html', {'user': 'true'})
             else:
                 return render(request, 'login.html', {"error_msg": "用户或密码错误"})
 
@@ -113,7 +110,7 @@ def people(request):
                                                'phone': arg[0].phone,
                                                'email': arg[0].email,
                                                'myself': arg[0].myself,
-                                               'good-at': arg[0].good_at,
+                                               'good_at': arg[0].good_at,
                                                'go_way': arg[0].go_way,
                                                'user': _arg})
     else:
@@ -134,6 +131,11 @@ def save_ways(request):
         if arg:
             d = UserWays.objects.filter(user=_user, is_on=arg)
             d.delete()
+            if int(arg) > 2932:
+                Ways.objects.filter(is_on=arg).delete()
+                WayInfo.objects.filter(is_on=arg).delete()
+                WayScenery.objects.filter(is_on=arg).delete()
+                OptionWay.objects.filter(is_on=arg).delete()
     page = UserWays.objects.filter(user=_user)
     return render(request, 'save_way.html', {'page': page, 'user': 'true'})
 
@@ -145,6 +147,7 @@ def save_scenery(request):
         if arg:
             d = UserScenery.objects.filter(user=_user, scenery=arg)
             d.delete()
+
     page = UserScenery.objects.filter(user=_user)
     return render(request, 'save_scenery.html', {'page': page, 'user': 'true'})
 
@@ -180,6 +183,7 @@ def user_safe(request):
 
 def scenery_page(request):
     arg = request.GET.get('scenery')
+    print(len(arg))
     is_save = request.GET.get('is_save')
     scenery_list = ScenerySee.objects.filter(scenery_name=arg)
     if is_save and not UserScenery.objects.filter(scenery=arg).exists():
@@ -230,7 +234,6 @@ def hot_page(request):
 def option_page(request):
     global o_arg
     scenery = request.GET.get('scenery')
-    print(scenery)
     if request.user.is_authenticated:
         _arg = 'true'
         if request.method == 'POST':
@@ -269,7 +272,20 @@ def hot_way(request):
         user = 'true'
     else:
         user = 'false'
-    page = Ways.objects.all()
+    user_scenery = UserScenery.objects.filter(user=request.user).values('scenery')
+    if user_scenery:
+        where_arg = []
+        for scenery_dict in user_scenery:
+            where_arg.append(
+                "WayScenery.objects.filter(scenery__contains='{scenery}').values('is_on').distinct()".format(
+                    scenery=scenery_dict.get('scenery', None)))
+        pages = eval(' | '.join(where_arg))
+        is_on_list = []
+        for is_on in list(pages):
+            is_on_list.append('Ways.objects.filter(is_on="{is_on}")'.format(is_on=is_on.get("is_on")))
+        page = eval(" | ".join(is_on_list))
+    else:
+        page = Ways.objects.all()
     return render(request, 'hot_way.html', {'page': page, 'user': user})
 
 
@@ -374,6 +390,7 @@ def make_way(request):
             df = pd.DataFrame(list(page.values()))
             status, is_on = update_way_status(_user, df)
             if status:
+                print("1")
                 return redirect('/way_info?is_on={is_on}'.format(is_on=is_on))
             else:
                 return render(request, 'make_way.html',
@@ -399,11 +416,11 @@ def map(request):
 
 def logouts(request):
     logout(request=request)
-    return render(request,'views.html',{'user':'false'})
+    return render(request, 'views.html', {'user': 'false'})
 
 
 def user_save_way(request):
-    is_on =request.GET.get('is_on')
+    is_on = request.GET.get('is_on')
     way_list = Ways.objects.filter(is_on=is_on)
     user_way = UserWays()
     user_way.user = request.user
@@ -412,12 +429,10 @@ def user_save_way(request):
     user_way.days = way_list[0].days
     user_way.say_people = way_list[0].say_people
     user_way.start_time = way_list[0].start_time
-    user_way.end_time = way_list[0].start_time[:-2]+str(int((way_list[0].start_time)[-2:])+int(way_list[0].days)-1)
+    user_way.end_time = way_list[0].start_time[:-2] + str(
+        int((way_list[0].start_time)[-2:]) + int(way_list[0].days) - 1)
     user_way.save()
     return redirect(f"/way_info/?is_on={is_on}")
-
-
-
 
 
 class SceneryView(APIView):
@@ -437,26 +452,27 @@ class ScenerysView(APIView):
 
 
 class WayView(APIView):
-    def get(self,request):
+    def get(self, request):
         is_on = request.GET.get('is_on')
         way_info_list = Ways.objects.filter(is_on=is_on)
-        serializer = WaysSerialezer(instance=way_info_list,many=True)
+        serializer = WaysSerialezer(instance=way_info_list, many=True)
         date = (serializer.data)[0].get('start_time')
-        day = int((serializer.data[0]).get('days'))+int(date[-2:])-1
-        (serializer.data[0])['end_time'] = date[:-2]+str(day)
+        day = int((serializer.data[0]).get('days')) + int(date[-2:]) - 1
+        if day < 10:
+            day = '0' + str(day)
+        else:
+            day = str(day)
+        (serializer.data[0])['end_time'] = date[:-2] + day
         (serializer.data[0])['user'] = str(request.user)
         return Response(serializer.data)
 
 
 class UserwayView(APIView):
-
     @csrf_exempt
-    def post(self,request):
-
-        serializer = UserwaySerialezer(data=request.data,many=True)
-        print(serializer)
+    def post(self, request):
+        serializer = UserwaySerialezer(data=request.data, many=True)
         if serializer.is_valid():
-            data = UserWays.objects.create(**(serializer.data)[0])
+            data = UserWays.objects.create(**serializer.validated_data)
             serializer = UserwaySerialezer(instance=data)
             return Response(serializer.data)
         else:

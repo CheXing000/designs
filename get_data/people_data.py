@@ -83,13 +83,14 @@ def update_way_status(user, df):
     status = False
     sql = """SELECT id,city,date,scenery,mark,say_people,image_name from user_way WHERE `user` = '{user}' and is_web='0' ORDER BY create_time""".format(
         user=user)
-    sql1 = """select is_on from all_way order by is_on desc limit 1"""
+    sql1 = """select is_on from all_way"""
     if df.empty:
         df = pd.read_sql(sql, con)
     df = df[['id', 'city', 'date', 'scenery', 'mark', 'say_people','image_name']]
     if df.empty:
         return False, 0
-    df1 = pd.read_sql(sql1, con)
+    dff1 = pd.read_sql(sql1, con)
+    df1 = pd.DataFrame({"is_on":dff1.astype(int).is_on.max()},index=[0])
     df1['scenerys'] = '~'.join(df.drop_duplicates(subset=['city']).city.values.tolist())
     dates = [min(df.drop_duplicates(subset=['date']).date.values.tolist()),
              max(df.drop_duplicates(subset=['date']).date.values.tolist())]
@@ -103,6 +104,7 @@ def update_way_status(user, df):
         columns=','.join(df1.columns.tolist()))
     df2 = df[['city', 'date']]
     df2['is_on'] = df1.is_on.values.tolist()[0]
+    df2.drop_duplicates(subset=['date'],keep='first',inplace=True)
     df2.rename(columns={'city': 'address'}, inplace=True)
     in_way_info = """insert into ways_info ({columns}) values(%s,%s,%s)""".format(
         columns=','.join(df2.columns.tolist()))
